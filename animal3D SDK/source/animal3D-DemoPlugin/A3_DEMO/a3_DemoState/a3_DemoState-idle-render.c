@@ -200,6 +200,9 @@ void a3demo_renderTest(a3_DemoState const* demoState, a3f64 const dt)
 
 	// ****TO-DO: render scene here
 	//	-> implement "render" from tutorial
+	static const float color[] = {1.0f, 0.0f, 0.0f, 1.0f};
+
+	glClearBufferfv(GL_COLOR, 0, color);
 
 }
 

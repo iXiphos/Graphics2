@@ -78,11 +78,11 @@ void a3demo_unloadTextures(a3_DemoState* demoState)
 {
 	// ****TO-DO: 
 	//	-> uncomment texture unloading algorithm
-/*	a3_Texture* currentTex = demoState->texture,
+	a3_Texture* currentTex = demoState->texture,
 		* const endTex = currentTex + demoStateMaxCount_texture;
 
 	while (currentTex < endTex)
-		a3textureRelease(currentTex++);*/
+		a3textureRelease(currentTex++);
 }
 
 

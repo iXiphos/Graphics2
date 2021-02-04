@@ -454,24 +454,24 @@ void a3demo_loadShaders(a3_DemoState *demoState)
 			// vs
 			// base
 			{ { { 0 },	"shdr-vs:passthru-trans",			a3shader_vertex  ,	1,{ A3_DEMO_VS"passthru_transform_vs4x.glsl" } } },// ****DECODE
-			{ { { 0 },	"shdr-vs:pass-col-trans",			a3shader_vertex  ,	1,{ A3_DEMO_VS"e/passColor_transform_vs4x.glsl" } } },
-			{ { { 0 },	"shdr-vs:passthru-trans-inst",		a3shader_vertex  ,	1,{ A3_DEMO_VS"e/passthru_transform_instanced_vs4x.glsl" } } },
-			{ { { 0 },	"shdr-vs:pass-col-trans-inst",		a3shader_vertex  ,	1,{ A3_DEMO_VS"e/passColor_transform_instanced_vs4x.glsl" } } },
+			{ { { 0 },	"shdr-vs:pass-col-trans",			a3shader_vertex  ,	1,{ A3_DEMO_VS"passColor_transform_vs4x.glsl" } } },
+			{ { { 0 },	"shdr-vs:passthru-trans-inst",		a3shader_vertex  ,	1,{ A3_DEMO_VS"passthru_transform_instanced_vs4x.glsl" } } },
+			{ { { 0 },	"shdr-vs:pass-col-trans-inst",		a3shader_vertex  ,	1,{ A3_DEMO_VS"passColor_transform_instanced_vs4x.glsl" } } },
 			// 00-common
 			{ { { 0 },	"shdr-vs:pass-tex-trans",			a3shader_vertex  ,	1,{ A3_DEMO_VS"00-common/passTexcoord_transform_vs4x.glsl" } } },// ****DECODE
 			{ { { 0 },	"shdr-vs:pass-tb-trans",			a3shader_vertex  ,	1,{ A3_DEMO_VS"00-common/passTangentBasis_transform_vs4x.glsl" } } },// ****DECODE
-			{ { { 0 },	"shdr-vs:pass-tex-trans-inst",		a3shader_vertex  ,	1,{ A3_DEMO_VS"00-common/e/passTexcoord_transform_instanced_vs4x.glsl" } } },
-			{ { { 0 },	"shdr-vs:pass-tb-trans-inst",		a3shader_vertex  ,	1,{ A3_DEMO_VS"00-common/e/passTangentBasis_transform_instanced_vs4x.glsl" } } },
+			{ { { 0 },	"shdr-vs:pass-tex-trans-inst",		a3shader_vertex  ,	1,{ A3_DEMO_VS"00-common/passTexcoord_transform_instanced_vs4x.glsl" } } },
+			{ { { 0 },	"shdr-vs:pass-tb-trans-inst",		a3shader_vertex  ,	1,{ A3_DEMO_VS"00-common/passTangentBasis_transform_instanced_vs4x.glsl" } } },
 
 			// gs
 			// 00-common
-			{ { { 0 },	"shdr-gs:draw-tb",					a3shader_geometry,	2,{ A3_DEMO_GS"00-common/e/drawTangentBasis_gs4x.glsl",
-																					A3_DEMO_GS"00-common/e/utilCommon_gs4x.glsl",} } },
+			{ { { 0 },	"shdr-gs:draw-tb",					a3shader_geometry,	2,{ A3_DEMO_GS"00-common/drawTangentBasis_gs4x.glsl",
+																					A3_DEMO_GS"00-common/utilCommon_gs4x.glsl",} } },
 
 			// fs
 			// base
 			{ { { 0 },	"shdr-fs:draw-col-unif",			a3shader_fragment,	1,{ A3_DEMO_FS"drawColorUnif_fs4x.glsl" } } },// ****DECODE
-			{ { { 0 },	"shdr-fs:draw-col-attr",			a3shader_fragment,	1,{ A3_DEMO_FS"e/drawColorAttrib_fs4x.glsl" } } },
+			{ { { 0 },	"shdr-fs:draw-col-attr",			a3shader_fragment,	1,{ A3_DEMO_FS"drawColorAttrib_fs4x.glsl" } } },
 			// 00-common
 			{ { { 0 },	"shdr-fs:draw-tex",					a3shader_fragment,	1,{ A3_DEMO_FS"00-common/drawTexture_fs4x.glsl" } } },// ****DECODE
 			{ { { 0 },	"shdr-fs:draw-Lambert",				a3shader_fragment,	2,{ A3_DEMO_FS"00-common/drawLambert_fs4x.glsl",// ****DECODE
@@ -506,9 +506,9 @@ void a3demo_loadShaders(a3_DemoState *demoState)
 	//	- create program object
 	//	- attach shader objects
 
-	// ****TO-DO: 
+	// ****Done: 
 	//	-> uncomment base program setup
-/*	// base programs: 
+	// base programs: 
 	// transform-only program
 	currentDemoProg = demoState->prog_transform;
 	a3shaderProgramCreate(currentDemoProg->program, "prog:transform");
@@ -548,24 +548,29 @@ void a3demo_loadShaders(a3_DemoState *demoState)
 	a3shaderProgramCreate(currentDemoProg->program, "prog:draw-tb-inst");
 	a3shaderProgramAttachShader(currentDemoProg->program, shaderList.passTangentBasis_transform_instanced_vs->shader);
 	a3shaderProgramAttachShader(currentDemoProg->program, shaderList.drawTangentBasis_gs->shader);
-	a3shaderProgramAttachShader(currentDemoProg->program, shaderList.drawColorAttrib_fs->shader);*/
+	a3shaderProgramAttachShader(currentDemoProg->program, shaderList.drawColorAttrib_fs->shader);
 
 	// ****TO-DO: 
 	//	-> set up missing shader programs, using hints above: 
 	//		-> texturing, Lambert and Phong
-/*	// 00-common programs: 
+	// 00-common programs: 
 	// texturing
 	currentDemoProg = demoState->prog_drawTexture;
+	a3shaderProgramCreate(currentDemoProg->program, "prog:draw-tex");
+	a3shaderProgramAttachShader(currentDemoProg->program, shaderList.passTexcoord_transform_vs->shader);
+	a3shaderProgramAttachShader(currentDemoProg->program, shaderList.drawTexture_fs->shader);
+	
+
 	//...
 	// Lambert
 	//...
 	// Phong
-	//...*/
+	//...
 
 
 	// ****TO-DO: 
 	//	-> uncomment program linking and validation
-/*	// activate a primitive for validation
+	// activate a primitive for validation
 	// makes sure the specified geometry can draw using programs
 	// good idea to activate the drawable with the most attributes
 	a3vertexDrawableActivate(demoState->draw_axes);
@@ -581,7 +586,7 @@ void a3demo_loadShaders(a3_DemoState *demoState)
 		flag = a3shaderProgramValidate(currentDemoProg->program);
 		if (flag == 0)
 			printf("\n ^^^^ PROGRAM %u '%s' FAILED TO VALIDATE \n\n", i, currentDemoProg->program->handle->name);
-	}*/
+	}
 
 	// if linking fails, contingency plan goes here
 	// otherwise, release shaders
@@ -594,7 +599,7 @@ void a3demo_loadShaders(a3_DemoState *demoState)
 
 	// ****TO-DO: 
 	//	-> uncomment uniform setup and default value assignment
-/*	// prepare uniforms algorithmically instead of manually for all programs
+	// prepare uniforms algorithmically instead of manually for all programs
 	// get uniform and uniform block locations and set default values for all 
 	//	programs that have a uniform that will either never change or is
 	//	consistent for all programs
@@ -651,7 +656,7 @@ void a3demo_loadShaders(a3_DemoState *demoState)
 		// ****TO-DO: 
 		//	-> set lighting uniform and block handles and defaults
 
-	}*/
+	}
 
 
 	// ****LATER
@@ -671,7 +676,7 @@ void a3demo_loadTextures(a3_DemoState* demoState)
 {	
 	// ****TO-DO: 
 	//	-> uncomment texture loading
-/*	// indexing
+	// indexing
 	a3_Texture* tex;
 	a3ui32 i;
 
@@ -712,11 +717,11 @@ void a3demo_loadTextures(a3_DemoState* demoState)
 		a3textureCreateFromFile(texturePtr->texture, texturePtr->textureName, texturePtr->filePath);
 		a3textureActivate(texturePtr->texture, a3tex_unit00);
 		a3textureDefaultSettings();
-	}*/
+	}
 
 	// ****TO-DO: 
 	//	-> uncomment texture configuration
-/*	// change settings on a per-texture or per-type basis
+	// change settings on a per-texture or per-type basis
 	tex = demoState->texture;
 	// skyboxes
 	for (i = 0; i < 2; ++i, ++tex)
@@ -729,7 +734,7 @@ void a3demo_loadTextures(a3_DemoState* demoState)
 	{
 		a3textureActivate(tex, a3tex_unit00);
 		a3textureChangeRepeatMode(a3tex_repeatClamp, a3tex_repeatClamp);	// clamp both axes
-	}*/
+	}
 
 
 	// done
@@ -764,7 +769,7 @@ void a3demo_loadValidate(a3_DemoState* demoState)
 {
 	// ****TO-DO: 
 	//	-> uncomment
-/*	a3_BufferObject* currentBuff = demoState->drawDataBuffer,
+	a3_BufferObject* currentBuff = demoState->drawDataBuffer,
 		* const endBuff = currentBuff + demoStateMaxCount_drawDataBuffer;
 	a3_VertexArrayDescriptor* currentVAO = demoState->vertexArray,
 		* const endVAO = currentVAO + demoStateMaxCount_vertexArray;
@@ -806,7 +811,7 @@ void a3demo_loadValidate(a3_DemoState* demoState)
 
 	currentVAO = demoState->vao_tangentbasis_texcoord;
 	currentVAO->vertexBuffer = currentBuff;
-	a3_refreshDrawable_internal(demoState->draw_teapot, currentVAO, currentBuff);*/
+	a3_refreshDrawable_internal(demoState->draw_teapot, currentVAO, currentBuff);
 
 	a3demo_initDummyDrawable_internal(demoState);
 }

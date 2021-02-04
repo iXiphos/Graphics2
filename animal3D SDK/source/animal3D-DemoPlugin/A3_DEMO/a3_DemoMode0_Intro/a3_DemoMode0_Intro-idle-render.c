@@ -129,7 +129,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 
 	// ****TO-DO: 
 	//	-> uncomment graphics object arrays
-/*	// temp drawable pointers
+	// temp drawable pointers
 	const a3_VertexDrawable* drawable[] = {
 		0,								// root
 		0,								// camera
@@ -163,7 +163,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 		demoState->prog_drawTexture,
 		demoState->prog_drawLambert,
 		demoState->prog_drawPhong,
-	};*/
+	};
 
 	// target info
 	a3_DemoMode0_Intro_RenderMode const renderMode = demoMode->renderMode;
@@ -193,7 +193,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 
 	// ****TO-DO: 
 	//	-> uncomment skybox or solid clear
-/*	// clear buffers
+	// clear buffers
 	if (demoState->displaySkybox)
 	{
 		// skybox clear: just draw skybox
@@ -209,7 +209,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 	{
 		// full clear
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	}*/
+	}
 
 	// stencil test
 	//if (demoState->stencilTest)
@@ -217,9 +217,9 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 
 	// ****TO-DO: 
 	//	-> uncomment shader program activation for current mode
-/*	// select program based on settings
+	// select program based on settings
 	currentDemoProgram = renderProgram[renderMode];
-	a3shaderProgramActivate(currentDemoProgram->program);*/
+	a3shaderProgramActivate(currentDemoProgram->program);
 
 	// send shared data: 
 	//	- projection matrix
@@ -252,7 +252,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 			// activate specular map, fall through to Lambert
 			// ****TO-DO: 
 			//	-> uncomment texture activation
-		/*	a3textureActivate(texture_dm[j], a3tex_unit01);*/
+			a3textureActivate(texture_dm[j], a3tex_unit01);
 			// ****PRO-TIP: 
 			//	-> no break statement here because we can "fall through" the cases; this is convenient 
 			//		here because Phong does everything Lambert does, plus the additional step above
@@ -268,19 +268,27 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 			// activate diffuse map, fall through to solid color
 			// ****TO-DO: 
 			//	-> activate diffuse texture on texture unit 0
+			a3textureActivate(texture_dm[j], a3tex_unit00);
+			
+	
+
 
 		case intro_renderModeSolid:
 			// send general matrix and color, end
 			// ****TO-DO: 
 			//	-> send model-view-projection matrix
+			modelViewMat = currentSceneObject->modelMatrixStackPtr->modelViewMat;
+			a3shaderUniformSendFloatMat(a3unif_mat4, 0, currentDemoProgram->uMV, 1, modelViewMat.mm);
 			//	-> send solid color (not a matrix)
+
+			a3shaderUniformSendFloat(a3unif_vec4, currentDemoProgram->uColor0, hueCount, rgba4->v);
 
 			break;
 		}
 		// ****TO-DO: 
 		//	-> uncomment render call
-	/*	a3shaderUniformSendInt(a3unif_single, currentDemoProgram->uIndex, 1, &j);
-		a3vertexDrawableActivateAndRender(drawable[j]);*/
+		a3shaderUniformSendInt(a3unif_single, currentDemoProgram->uIndex, 1, &j);
+		a3vertexDrawableActivateAndRender(drawable[j]);
 	}
 
 	// stop using stencil
@@ -298,10 +306,10 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 
 	// ****TO-DO: 
 	//	-> uncomment overlay rendering
-/*	// scene overlays
+	// scene overlays
 	if (demoState->displayGrid || demoState->displayTangentBases || demoState->displayWireframe)
 	{
-		// draw grid aligned to world
+		 //draw grid aligned to world
 		if (demoState->displayGrid)
 		{
 			a3demo_drawModelSolidColor(modelViewProjectionMat.m, viewProjectionMat.m, a3mat4_identity.m, demoState->prog_drawColorUnif, demoState->draw_grid, blue);
@@ -315,7 +323,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 			currentDemoProgram = demoState->prog_drawTangentBasis;
 			a3shaderProgramActivate(currentDemoProgram->program);
 
-			// projection matrix
+			 //projection matrix
 			a3shaderUniformSendFloatMat(a3unif_mat4, 0, currentDemoProgram->uP, 1, projectionMat.mm);
 			// wireframe color
 			a3shaderUniformSendFloat(a3unif_vec4, currentDemoProgram->uColor0, hueCount, rgba4->v);
@@ -341,7 +349,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 				a3vertexDrawableActivateAndRender(drawable[j]);
 			}
 		}
-	}*/
+	}
 
 	// overlays with no depth
 	glDisable(GL_DEPTH_TEST);
@@ -354,7 +362,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 
 	// ****TO-DO: 
 	//	-> uncomment axis rendering
-/*	// superimpose axes
+	// superimpose axes
 	// draw coordinate axes in front of everything
 	currentDemoProgram = demoState->prog_drawColorAttrib;
 	a3shaderProgramActivate(currentDemoProgram->program);
@@ -378,7 +386,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 			modelMat = currentSceneObject->modelMatrixStackPtr->modelMat;
 			a3demo_drawModelSimple(modelViewProjectionMat.m, viewProjectionMat.m, modelMat.m, currentDemoProgram);
 		}
-	}*/
+	}
 }
 
 

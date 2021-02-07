@@ -301,7 +301,7 @@ void a3demo_loadGeometry(a3_DemoState *demoState)
 	for (i = 0; i < loadedModelsCount; ++i)
 		sharedIndexStorage += a3indexFormatGetStorageSpaceRequired(sceneCommonIndexFormat, loadedModelsData[i].numIndices);
 
-	// ****TO-DO: 
+	// ****DONE: 
 	//	-> uncomment buffer creation
 	// create shared buffer
 	vbo_ibo = demoState->vbo_staticSceneObjectDrawBuffer;
@@ -309,7 +309,7 @@ void a3demo_loadGeometry(a3_DemoState *demoState)
 	sharedVertexStorage = 0;
 
 
-	// ****TO-DO: 
+	// ****DONE: 
 	//	-> uncomment vertex array and drawable initialization for position/color format descriptor
 	// create vertex formats and drawables
 	// axes: position and color
@@ -318,7 +318,7 @@ void a3demo_loadGeometry(a3_DemoState *demoState)
 	currentDrawable = demoState->draw_axes;
 	sharedVertexStorage += a3geometryGenerateDrawable(currentDrawable, displayShapesData + 0, vao, vbo_ibo, sceneCommonIndexFormat, 0, 0);
 
-	// ****TO-DO: 
+	// ****DONE: 
 	//	-> uncomment vertex array and drawable initialization for position-only format descriptor
 	// grid: position attribute only
 	// overlay objects are also just position
@@ -327,7 +327,7 @@ void a3demo_loadGeometry(a3_DemoState *demoState)
 	currentDrawable = demoState->draw_grid;
 	sharedVertexStorage += a3geometryGenerateDrawable(currentDrawable, displayShapesData + 1, vao, vbo_ibo, sceneCommonIndexFormat, 0, 0);
 
-	// ****TO-DO: 
+	// ****DONE: 
 	//	-> uncomment vertex array initialization for position/normal/texcoord format descriptor 
 	//		and first couple drawables using that format
 	//	-> time to take the wheel: implement the rest of the procedural shape drawables
@@ -352,14 +352,13 @@ void a3demo_loadGeometry(a3_DemoState *demoState)
 	currentDrawable = demoState->draw_unit_cone;
 	sharedVertexStorage += a3geometryGenerateDrawable(currentDrawable, proceduralShapesData + 6, vao, vbo_ibo, sceneCommonIndexFormat, 0, 0);
 
-	// ****TO-DO: 
+	// ****DONE: 
 	//	-> implement the remaining vertex array format from scratch
 	//		-> the teapot is the only drawable that uses it; use the above examples to guide you
 	vao = demoState->vao_tangentbasis_texcoord;
-	
-	a3geometryGenerateVertexArray(vao, "vao:pos+col", displayShapesData + 0, vbo_ibo, sharedVertexStorage);
+	a3geometryGenerateVertexArray(vao, "vao:tangentbasis", loadedModelsData + 0, vbo_ibo, sharedVertexStorage);
 	currentDrawable = demoState->draw_teapot;
-	sharedVertexStorage += a3geometryGenerateDrawable(currentDrawable, loadedModelsData, vao, vbo_ibo, sceneCommonIndexFormat, 0, 0);
+	sharedVertexStorage += a3geometryGenerateDrawable(currentDrawable, loadedModelsData + 0, vao, vbo_ibo, sceneCommonIndexFormat, 0, 0);
 	//...*/
 
 
@@ -506,7 +505,7 @@ void a3demo_loadShaders(a3_DemoState *demoState)
 	//	- create program object
 	//	- attach shader objects
 
-	// ****Done: 
+	// ****DONE: 
 	//	-> uncomment base program setup
 	// base programs: 
 	// transform-only program
@@ -568,7 +567,7 @@ void a3demo_loadShaders(a3_DemoState *demoState)
 	//...
 
 
-	// ****TO-DO: 
+	// ****DONE 
 	//	-> uncomment program linking and validation
 	// activate a primitive for validation
 	// makes sure the specified geometry can draw using programs

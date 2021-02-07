@@ -31,7 +31,7 @@
 
 layout (location = 0) in vec4 aPosition;
 
-uniform mat4 uMVP;
+uniform mat4 uMVP; //model-view-projection matrix
 
 flat out int vVertexID;
 flat out int vInstanceID;

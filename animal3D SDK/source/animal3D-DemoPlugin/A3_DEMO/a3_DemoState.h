@@ -192,6 +192,7 @@ struct a3_DemoState
 		};
 	};
 
+	// ****DONE
 	// draw data buffers
 	union {
 		a3_VertexBuffer drawDataBuffer[demoStateMaxCount_drawDataBuffer];
@@ -201,7 +202,7 @@ struct a3_DemoState
 		};
 	};
 
-
+	// ****DONE
 	// vertex array objects
 	union {
 		a3_VertexArrayDescriptor vertexArray[demoStateMaxCount_vertexArray];
@@ -215,7 +216,7 @@ struct a3_DemoState
 		};
 	};
 
-
+	// ****DONE
 	// drawables
 	union {
 		a3_VertexDrawable drawable[demoStateMaxCount_drawable];
@@ -237,7 +238,7 @@ struct a3_DemoState
 	};
 
 
-	// ****TO-DO:
+	// ****DONE:
 	//	-> uncomment shader programs union
 	// shader programs and uniforms
 	union {
@@ -265,7 +266,7 @@ struct a3_DemoState
 	};
 
 
-	// ****TO-DO:
+	// ****DONE:
 	//	-> uncomment textures union
 	// textures
 	union {

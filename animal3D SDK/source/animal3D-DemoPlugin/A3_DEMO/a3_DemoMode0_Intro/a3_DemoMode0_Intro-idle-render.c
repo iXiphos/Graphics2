@@ -193,7 +193,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 
 	// ****TO-DO: 
 	//	-> uncomment skybox or solid clear
-	// clear buffers
+	//// clear buffers
 	if (demoState->displaySkybox)
 	{
 		// skybox clear: just draw skybox
@@ -212,8 +212,8 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 	}
 
 	// stencil test
-	//if (demoState->stencilTest)
-	//	a3demo_drawStencilTest(modelViewProjectionMat.m, viewProjectionMat.m, modelMat.m, demoState->prog_drawColorUnif, demoState->draw_unit_sphere);
+	/*if (demoState->stencilTest)
+		a3demo_drawStencilTest(modelViewProjectionMat.m, viewProjectionMat.m, modelMat.m, demoState->prog_drawColorUnif, demoState->draw_unit_sphere);*/
 
 	// ****TO-DO: 
 	//	-> uncomment shader program activation for current mode
@@ -280,7 +280,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 			modelViewMat = currentSceneObject->modelMatrixStackPtr->modelViewMat;
 			a3shaderUniformSendFloatMat(a3unif_mat4, 0, currentDemoProgram->uMV, 1, modelViewMat.mm);
 			//	-> send solid color (not a matrix)
-
+			
 			a3shaderUniformSendFloat(a3unif_vec4, currentDemoProgram->uColor0, hueCount, rgba4->v);
 
 			break;

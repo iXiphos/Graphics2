@@ -61,7 +61,7 @@ void main()
 //	// is a unit vector (length = 1)
 //	// is perpendicular to the face
 //
-    gl_Position = uMVP * aPosition;
+    gl_Position = uP * vPosition;
 	vTexcoord = aTexcoord;
 
 	vVertexID = gl_VertexID;

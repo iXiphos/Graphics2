@@ -341,6 +341,7 @@ void a3demo_loadGeometry(a3_DemoState *demoState)
 	currentDrawable = demoState->draw_unit_box;
 	sharedVertexStorage += a3geometryGenerateDrawable(currentDrawable, proceduralShapesData + 1, vao, vbo_ibo, sceneCommonIndexFormat, 0, 0);
 
+	
 	currentDrawable = demoState->draw_unit_sphere;
 	sharedVertexStorage += a3geometryGenerateDrawable(currentDrawable, proceduralShapesData + 2, vao, vbo_ibo, sceneCommonIndexFormat, 0, 0);
 	currentDrawable = demoState->draw_unit_cylinder;
@@ -452,7 +453,7 @@ void a3demo_loadShaders(a3_DemoState *demoState)
 
 			// vs
 			// base
-			{ { { 0 },	"shdr-vs:passthru-trans",			a3shader_vertex  ,	1,{ A3_DEMO_VS"e/passthru_transform_vs4x.glsl" } } },// ****DECODE
+			{ { { 0 },	"shdr-vs:passthru-trans",			a3shader_vertex  ,	1,{ A3_DEMO_VS"passthru_transform_vs4x.glsl" } } },// ****DECODE
 			{ { { 0 },	"shdr-vs:pass-col-trans",			a3shader_vertex  ,	1,{ A3_DEMO_VS"e/passColor_transform_vs4x.glsl" } } },
 			{ { { 0 },	"shdr-vs:passthru-trans-inst",		a3shader_vertex  ,	1,{ A3_DEMO_VS"e/passthru_transform_instanced_vs4x.glsl" } } },
 			{ { { 0 },	"shdr-vs:pass-col-trans-inst",		a3shader_vertex  ,	1,{ A3_DEMO_VS"e/passColor_transform_instanced_vs4x.glsl" } } },
@@ -469,7 +470,7 @@ void a3demo_loadShaders(a3_DemoState *demoState)
 
 			// fs
 			// base
-			{ { { 0 },	"shdr-fs:draw-col-unif",			a3shader_fragment,	1,{ A3_DEMO_FS"e/drawColorUnif_fs4x.glsl" } } },// ****DECODE
+			{ { { 0 },	"shdr-fs:draw-col-unif",			a3shader_fragment,	1,{ A3_DEMO_FS"drawColorUnif_fs4x.glsl" } } },// ****DECODE
 			{ { { 0 },	"shdr-fs:draw-col-attr",			a3shader_fragment,	1,{ A3_DEMO_FS"e/drawColorAttrib_fs4x.glsl" } } },
 			// 00-common
 			{ { { 0 },	"shdr-fs:draw-tex",					a3shader_fragment,	1,{ A3_DEMO_FS"00-common/e/drawTexture_fs4x.glsl" } } },// ****DECODE

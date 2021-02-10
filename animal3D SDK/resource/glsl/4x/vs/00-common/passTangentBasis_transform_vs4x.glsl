@@ -48,7 +48,9 @@ uniform mat4 uMVP;
 
 out vec4 vPosition;
 out vec4 vNormal;
+out vec4 vbVertexData;
 out vec2 vTexcoord;
+
 
 void main()
 {
@@ -59,7 +61,7 @@ void main()
 //	// is a unit vector (length = 1)
 //	// is perpendicular to the face
 //
-    gl_Position = uP * vPosition;
+    gl_Position = uMVP * aPosition;
 	vTexcoord = aTexcoord;
 
 	vVertexID = gl_VertexID;

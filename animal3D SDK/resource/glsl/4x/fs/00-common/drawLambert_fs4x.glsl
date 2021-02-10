@@ -48,19 +48,22 @@ uniform float uLightRadii;
 
 uniform vec4 uColor;
 uniform vec4 uColor0;
-
+uniform mat4 uMV;
+uniform sampler2D uTex_dm;
 
 void main()
 {
 	// diffuse coefficient
+	
 	//  dot product of normal and light vector
+	float dist = length(uLightPos - vPosition);
 
 	vec4 N = normalize(vNormal);
 	vec4 L = normalize(uLightPos - vPosition);
-	float kd = dot(N, L);
-//
-//	// DEBUGGING
-//
-	rtFragColor = uColor * uColor0 * kd * 0.5f;
+	float kd = max(0.0, dot(N, L));
+
+	kd = kd * (10 / (1.0 + (0.5 * dist)));
+
+	rtFragColor = (kd)* texture2D(uTex_dm, vTexcoord) * uColor ;
 
 }

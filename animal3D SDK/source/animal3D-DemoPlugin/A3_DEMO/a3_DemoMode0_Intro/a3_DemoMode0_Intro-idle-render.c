@@ -235,7 +235,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 
 	// ****TO-DO: 
 	//	-> send lighting uniforms and bind blocks where appropriate
-	a3shaderUniformSendFloat(a3unif_vec4, currentDemoProgram->uLightPos, 1, a3vec4_zero.v);
+	a3shaderUniformSendFloat(a3unif_vec4, currentDemoProgram->uLightPos, 1, activeCamera->projectorMatrixStackPtr->projectionMat.mm);
 	a3shaderUniformSendFloat(a3unif_single, currentDemoProgram->uLightRadii, 1, 0);
 	a3shaderUniformSendFloat(a3unif_vec4, currentDemoProgram->uColor0, 1, rgba4[i].v);
 
@@ -267,7 +267,8 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 			//		(hint: the correct uniform location is in the shader header)
 			modelViewProjectionMat = currentSceneObject->modelMatrixStackPtr->modelViewProjectionMat;
 			a3shaderUniformSendFloatMat(a3unif_mat4, 0, currentDemoProgram->uMVP, 1, modelViewProjectionMat.mm);
-			a3shaderUniformSendFloatMat(a3unif_mat4, 1, currentDemoProgram->uMV_nrm, 1, currentSceneObject->modelMatrixStackPtr->modelViewMatInverse.mm);
+
+			a3shaderUniformSendFloatMat(a3unif_mat4, 1, currentDemoProgram->uMV_nrm, 1, currentSceneObject->modelMatrixStackPtr->modelMatInverse.mm);
 
 			a3shaderUniformSendFloat(a3unif_vec4, currentDemoProgram->uColor0, 1, rgba4[i].v);
 

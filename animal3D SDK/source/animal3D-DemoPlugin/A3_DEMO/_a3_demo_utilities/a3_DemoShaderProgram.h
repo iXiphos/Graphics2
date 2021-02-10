@@ -95,6 +95,12 @@ extern "C"
 
 		// ****TO-DO: 
 		//	-> add lighting uniform and block handles
+		struct 
+		{
+			a3i32
+				uLightPos,
+				uLightRadii;
+		};
 
 	};
 

@@ -38,28 +38,29 @@
 
 layout (location = 0) in vec4 aPosition;
 layout (location = 2) in vec3 aNormal;
+layout (location = 8) in vec2 aTexcoord;
 
 flat out int vVertexID;
 flat out int vInstanceID;
 
 uniform mat4 uMV, uP, uMV_nrm;
+uniform mat4 uMVP;
 
 out vec4 vPosition;
 out vec4 vNormal;
+out vec2 vTexcoord;
 
 void main()
 {
 	// DUMMY OUTPUT: directly assign input position to output position
 	//gl_Position = aPosition;
-
-	
-
 	vPosition = uMV * aPosition;
 	vNormal = uMV_nrm * vec4(aNormal, 0.0);
-	// is a unit vector (length = 1)
-	// is perpendicular to the face
-
-	gl_Position = uP * vPosition;
+//	// is a unit vector (length = 1)
+//	// is perpendicular to the face
+//
+    gl_Position = uP * vPosition;
+	vTexcoord = aTexcoord;
 
 	vVertexID = gl_VertexID;
 	vInstanceID = gl_InstanceID;

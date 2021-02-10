@@ -30,6 +30,7 @@
 //		(hint: in the render routine, consolidate lighting data 
 //		into arrays; read them here as arrays)
 //	-> calculate Lambertian coefficient
+
 //	-> implement Lambertian shading model and assign to output
 //		(hint: coefficient * attenuation * light color * surface color)
 //	-> implement for multiple lights
@@ -37,28 +38,29 @@
 
 layout (location = 0) out vec4 rtFragColor;
 
+
 in vec4 vPosition;
 in vec4 vNormal;
+in vec2 vTexcoord;
 
 uniform vec4 uLightPos;
+uniform float uLightRadii;
 
+uniform vec4 uColor;
+uniform vec4 uColor0;
 
 
 void main()
 {
-	// DUMMY OUTPUT: all fragments are OPAQUE LIME
-	rtFragColor = vec4(0.5, 1.0, 0.0, 1.0);
-
-
 	// diffuse coefficient
 	//  dot product of normal and light vector
 
 	vec4 N = normalize(vNormal);
 	vec4 L = normalize(uLightPos - vPosition);
 	float kd = dot(N, L);
-
-	// DEBUGGING
-
-	rtFragColor = vec4(kd, kd, kd, 1.0);
+//
+//	// DEBUGGING
+//
+	rtFragColor = uColor * uColor0 * kd * 0.5f;
 
 }

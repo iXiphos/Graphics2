@@ -351,7 +351,7 @@ void a3demo_loadShaders(a3_DemoState *demoState)
 	// ****TO-DO: 
 	//	-> implement "startup" from tutorial
 	{
-		glCreateVertexArrays(1, demoState->vertex_array_object);
+		glCreateVertexArrays(1, &demoState->vertex_array_object);
 		glBindVertexArray(demoState->vertex_array_object);
 	}
 

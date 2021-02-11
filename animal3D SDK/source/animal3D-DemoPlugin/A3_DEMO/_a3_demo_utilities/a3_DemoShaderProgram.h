@@ -20,6 +20,8 @@
 	
 	a3_DemoShaderProgram.h
 	Wrapper for shaders used in demo state.
+
+	* With contributions from Christopher Foster and Aidan Murphy
 */
 
 #ifndef __ANIMAL3D_DEMOSHADERPROGRAM_H

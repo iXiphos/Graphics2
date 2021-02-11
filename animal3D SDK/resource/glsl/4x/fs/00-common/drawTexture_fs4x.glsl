@@ -20,6 +20,8 @@
 	
 	drawTexture_fs4x.glsl
 	Output texture blended with color.
+
+	* With contributions from Christopher Foster and Aidan Murphy
 */
 
 #version 450

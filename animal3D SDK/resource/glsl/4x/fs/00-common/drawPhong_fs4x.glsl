@@ -20,6 +20,8 @@
 	
 	drawPhong_fs4x.glsl
 	Output Phong shading.
+
+	* With contributions from Christopher Foster and Aidan Murphy
 */
 
 #version 450

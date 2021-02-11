@@ -20,6 +20,8 @@
 	
 	drawLambert_fs4x.glsl
 	Output Lambertian shading.
+
+	* With contributions from Christopher Foster and Aidan Murphy
 */
 
 #version 450

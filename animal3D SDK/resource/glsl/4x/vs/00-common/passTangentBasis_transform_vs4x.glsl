@@ -20,6 +20,8 @@
 	
 	passTangentBasis_transform_vs4x.glsl
 	Calculate and pass tangent basis.
+
+	* With contributions from Christopher Foster and Aidan Murphy
 */
 
 #version 450

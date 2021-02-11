@@ -24,6 +24,8 @@
 	********************************************
 	*** THIS IS YOUR DEMO'S MAIN HEADER FILE ***
 	********************************************
+	* 
+	* * With contributions from Christopher Foster and Aidan Murphy
 */
 
 #ifndef __ANIMAL3D_DEMOSTATE_H

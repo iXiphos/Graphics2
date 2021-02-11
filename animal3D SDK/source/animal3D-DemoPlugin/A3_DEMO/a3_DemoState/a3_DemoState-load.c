@@ -26,6 +26,8 @@
 	*** Implement your demo logic pertaining to      ***
 	***     LOADING in this file.                    ***
 	****************************************************
+	* 
+	* With contributions from Christopher Foster and Aidan Murphy
 */
 
 //-----------------------------------------------------------------------------

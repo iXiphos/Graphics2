@@ -34,6 +34,22 @@ layout (location = 0) out vec4 rtFragColor;
 
 void main()
 {
-	// DUMMY OUTPUT: all fragments are OPAQUE GREEN
-	rtFragColor = vec4(0.0, 1.0, 0.0, 1.0);
+	vec4 lightPos = vec4(5.0,5.0, 5.0, 0.0);
+	//  dot product of normal and light vector
+	float lightDis = length(lightPos - vPosition);
+
+	vec4 N = normalize(vNormal);
+	vec4 L = normalize(lightPos - vPosition);
+	vec4 V = normalize(vPosition);
+	vec4 R = reflect(-L, N);
+
+	float kd = max(dot(N,L), 0);
+	vec4 diffuse_albedo = texture(uTex_dm, vTexcoord) * uColor;
+	vec4 diffuse = kd * diffuse_albedo;
+	vec4 specular = pow(max(dot(R, V), 0.0), 128) * vec4(1);
+	//specular = vec4(0);
+
+	
+
+	rtFragColor = vec4(0.1, 0.1, 0.1, 0.1) + diffuse + specular + (1 / (1 + (0.5 * pow(lightDis, 2))));
 }

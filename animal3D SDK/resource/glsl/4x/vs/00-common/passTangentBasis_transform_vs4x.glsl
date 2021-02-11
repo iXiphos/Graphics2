@@ -24,7 +24,7 @@
 
 #version 450
 
-// ****TO-DO: 
+// ****DONE: 
 //	-> declare matrices
 //		(hint: not MVP this time, made up of multiple; see render code)
 //	-> transform input position correctly, assign to output
@@ -44,7 +44,6 @@ flat out int vVertexID;
 flat out int vInstanceID;
 
 uniform mat4 uMV, uP, uMV_nrm;
-uniform mat4 uMVP;
 
 out vec4 vPosition;
 out vec4 vNormal;
@@ -63,7 +62,7 @@ void main()
 //
     gl_Position = uP * vPosition;
 	vTexcoord = aTexcoord;
-
+	//vPosition = uP * vPosition;
 	vVertexID = gl_VertexID;
 	vInstanceID = gl_InstanceID;
 }

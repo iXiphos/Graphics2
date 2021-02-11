@@ -103,7 +103,7 @@ a3real4x4r a3demo_setAtlasTransform_internal(a3real4x4p m_out,
 // initialize dummy drawable
 inline void a3demo_initDummyDrawable_internal(a3_DemoState *demoState)
 {
-	// ****TO-DO: 
+	// ****DONE: 
 	//	-> uncomment
 	// dummy drawable for point drawing: copy any of the existing ones, 
 	//	set vertex count to 1 and primitive to points (0x0000)
@@ -550,27 +550,32 @@ void a3demo_loadShaders(a3_DemoState *demoState)
 	a3shaderProgramAttachShader(currentDemoProg->program, shaderList.drawTangentBasis_gs->shader);
 	a3shaderProgramAttachShader(currentDemoProg->program, shaderList.drawColorAttrib_fs->shader);
 
-	// ****TO-DO: 
+	// ****DONE: 
 	//	-> set up missing shader programs, using hints above: 
 	//		-> texturing, Lambert and Phong
 	// 00-common programs: 
 	// texturing
+
+
+	//enabling texture shader
 	currentDemoProg = demoState->prog_drawTexture;
 	a3shaderProgramCreate(currentDemoProg->program, "prog:draw-tex");
 	a3shaderProgramAttachShader(currentDemoProg->program, shaderList.passTexcoord_transform_vs->shader);
 	a3shaderProgramAttachShader(currentDemoProg->program, shaderList.drawTexture_fs->shader);
 
+
+	//enableding lambert shading
 	currentDemoProg = demoState->prog_drawLambert;
 	a3shaderProgramCreate(currentDemoProg->program, "prog:draw-Lambert");
 	a3shaderProgramAttachShader(currentDemoProg->program, shaderList.passTangentBasis_transform_vs->shader);
 	a3shaderProgramAttachShader(currentDemoProg->program, shaderList.drawLambert_fs->shader);
 	
+	//enabling phong shading
+	currentDemoProg = demoState->prog_drawPhong;
+	a3shaderProgramCreate(currentDemoProg->program, "prog:draw-Phong");
+	a3shaderProgramAttachShader(currentDemoProg->program, shaderList.passTangentBasis_transform_vs->shader);
+	a3shaderProgramAttachShader(currentDemoProg->program, shaderList.drawPhong_fs->shader);
 
-	//...
-	// Lambert
-	//...
-	// Phong
-	//...
 
 
 	// ****DONE 
@@ -658,7 +663,7 @@ void a3demo_loadShaders(a3_DemoState *demoState)
 		a3demo_setUniformDefaultBlock(currentDemoProg, ubTransformMVP, 0);
 		a3demo_setUniformDefaultBlock(currentDemoProg, ubTransformMVPB, 1);
 
-		// ****TO-DO: 
+		// ****DONE: 
 		//	-> set lighting uniform and block handles and defaults
 		a3demo_setUniformDefaultVec4(currentDemoProg, uLightPos, a3vec4_zero.v);
 		a3demo_setUniformDefaultFloat(currentDemoProg, uLightRadii, defaultFloat);
@@ -680,7 +685,7 @@ void a3demo_loadShaders(a3_DemoState *demoState)
 // utility to load textures
 void a3demo_loadTextures(a3_DemoState* demoState)
 {	
-	// ****TO-DO: 
+	// ****DONE: 
 	//	-> uncomment texture loading
 	// indexing
 	a3_Texture* tex;
@@ -725,7 +730,7 @@ void a3demo_loadTextures(a3_DemoState* demoState)
 		a3textureDefaultSettings();
 	}
 
-	// ****TO-DO: 
+	// ****DONE: 
 	//	-> uncomment texture configuration
 	// change settings on a per-texture or per-type basis
 	tex = demoState->texture;

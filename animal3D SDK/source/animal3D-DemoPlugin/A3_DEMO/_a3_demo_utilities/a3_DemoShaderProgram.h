@@ -93,8 +93,9 @@ extern "C"
 				ubTransformMVP;		// model-view-projection matrix block
 		};
 
-		// ****TO-DO: 
+		// ****DONE: 
 		//	-> add lighting uniform and block handles
+		//  added a uniform for light positions and light radii
 		struct 
 		{
 			a3i32

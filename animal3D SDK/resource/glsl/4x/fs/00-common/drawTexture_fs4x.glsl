@@ -24,7 +24,7 @@
 
 #version 450
 
-// ****TO-DO: 
+// ****DONE: 
 //	-> declare texture coordinate varying
 //	-> declare sampler uniform
 //		(hint: correct name is used in codebase)
@@ -41,8 +41,7 @@ uniform vec4 uColor;
 
 void main()
 {
-	// DUMMY OUTPUT: all fragments are OPAQUE YELLOW
+	
 	rtFragColor = texture2D(uTex_dm, vTexcoord) * uColor;
 
-	
 }

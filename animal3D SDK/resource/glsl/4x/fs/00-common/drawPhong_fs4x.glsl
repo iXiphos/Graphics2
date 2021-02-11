@@ -24,7 +24,7 @@
 
 #version 450
 
-// ****TO-DO: 
+// ****DONE: 
 //	-> start with list from "drawLambert_fs4x"
 //		(hint: can put common stuff in "utilCommon_fs4x" to avoid redundancy)
 //	-> calculate view vector, reflection vector and Phong coefficient
@@ -32,24 +32,33 @@
 
 layout (location = 0) out vec4 rtFragColor;
 
+in vec4 vPosition;
+in vec4 vNormal;
+in vec2 vTexcoord;
+
+uniform vec4 uLightPos;
+uniform float uLightRadii;
+
+uniform vec4 uColor;
+uniform vec4 uColor0;
+uniform sampler2D uTex_dm;
 void main()
 {
-	vec4 lightPos = vec4(5.0,5.0, 5.0, 0.0);
+	// used code from GLSL Blue book as reference
+
+
 	//  dot product of normal and light vector
-	float lightDis = length(lightPos - vPosition);
+	float lightDis = length(uLightPos - vPosition);
 
 	vec4 N = normalize(vNormal);
-	vec4 L = normalize(lightPos - vPosition);
+	vec4 L = normalize((uLightPos  )- vPosition);
 	vec4 V = normalize(vPosition);
-	vec4 R = reflect(-L, N);
+	vec4 R = reflect(L, N);
 
 	float kd = max(dot(N,L), 0);
 	vec4 diffuse_albedo = texture(uTex_dm, vTexcoord) * uColor;
-	vec4 diffuse = kd * diffuse_albedo;
-	vec4 specular = pow(max(dot(R, V), 0.0), 128) * vec4(1);
-	//specular = vec4(0);
-
+	vec4 diffuse = kd * diffuse_albedo ;
+	vec4 specular = pow(max(dot(R, V), 0),  256 * 4 * (1 / lightDis)) * vec4(.9) ;
 	
-
-	rtFragColor = vec4(0.1, 0.1, 0.1, 0.1) + diffuse + specular + (1 / (1 + (0.5 * pow(lightDis, 2))));
+	rtFragColor =  (diffuse + specular) * 0.8 +  diffuse_albedo * 0.2	;
 }

@@ -127,7 +127,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 	const a3_SceneObjectComponent* activeCameraObject = activeCamera->sceneObjectPtr;
 	const a3_SceneObjectComponent* currentSceneObject, * endSceneObject;
 
-	// ****TO-DO: 
+	// ****DONE: 
 	//	-> uncomment graphics object arrays
 	// temp drawable pointers
 	const a3_VertexDrawable* drawable[] = {
@@ -191,7 +191,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 	a3framebufferDeactivateSetViewport(a3fbo_depth24_stencil8,
 		-demoState->frameBorder, -demoState->frameBorder, demoState->frameWidth, demoState->frameHeight);
 
-	// ****TO-DO: 
+	// ****DONE: 
 	//	-> uncomment skybox or solid clear
 	//// clear buffers
 	if (demoState->displaySkybox)
@@ -215,7 +215,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 	/*if (demoState->stencilTest)
 		a3demo_drawStencilTest(modelViewProjectionMat.m, viewProjectionMat.m, modelMat.m, demoState->prog_drawColorUnif, demoState->draw_unit_sphere);*/
 
-	// ****TO-DO: 
+	// ****DONE: 
 	//	-> uncomment shader program activation for current mode
 	// select program based on settings
 	currentDemoProgram = renderProgram[renderMode];
@@ -233,7 +233,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 	if (demoState->updateAnimation)
 		a3shaderUniformSendDouble(a3unif_single, currentDemoProgram->uTime, 1, &demoState->timer_display->totalTime);
 
-	// ****TO-DO: 
+	// ****DONE: 
 	//	-> send lighting uniforms and bind blocks where appropriate
 	a3shaderUniformSendFloat(a3unif_vec4, currentDemoProgram->uLightPos, 1, activeCameraObject->dataPtr->position.v);
 	a3shaderUniformSendFloat(a3unif_single, currentDemoProgram->uLightRadii, 1, 0);
@@ -252,7 +252,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 		{
 		case intro_renderModePhong:
 			// activate specular map, fall through to Lambert
-			// ****TO-DO: 
+			// ****DONE: 
 			//	-> uncomment texture activation
 			a3textureActivate(texture_dm[j], a3tex_unit01);
 			// ****PRO-TIP: 
@@ -262,19 +262,19 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 			// send lights and matrices, fall through to texturing
 			modelViewMat = currentSceneObject->modelMatrixStackPtr->modelViewMat;
 			a3shaderUniformSendFloatMat(a3unif_mat4, 0, currentDemoProgram->uMV, 1, modelViewMat.mm);
-			// ****TO-DO: 
+			// ****DONE: 
 			//	-> send "normal matrix": the inverse-transpose of the model-view matrix
 			//		(hint: the correct uniform location is in the shader header)
 			modelViewProjectionMat = currentSceneObject->modelMatrixStackPtr->modelViewProjectionMat;
 			a3shaderUniformSendFloatMat(a3unif_mat4, 0, currentDemoProgram->uMVP, 1, modelViewProjectionMat.mm);
 
-			a3shaderUniformSendFloatMat(a3unif_mat4, 0, currentDemoProgram->uMV_nrm, 1, currentSceneObject->modelMatrixStackPtr->modelMatInverse.mm);
+			a3shaderUniformSendFloatMat(a3unif_mat4, 0, currentDemoProgram->uMV_nrm, 1, currentSceneObject->modelMatrixStackPtr->modelMatInverseTranspose.mm);
 
 			a3shaderUniformSendFloat(a3unif_vec4, currentDemoProgram->uColor0, 1, rgba4[i].v);
 
 		case intro_renderModeTexture:
 			// activate diffuse map, fall through to solid color
-			// ****TO-DO: 
+			// ****DONE: 
 			//	-> activate diffuse texture on texture unit 0
 			a3textureActivate(texture_dm[j], a3tex_unit00);
 			
@@ -283,7 +283,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 
 		case intro_renderModeSolid:
 			// send general matrix and color, end
-			// ****TO-DO: 
+			// ****DONE: 
 			//	-> send model-view-projection matrix
 			modelViewProjectionMat = currentSceneObject->modelMatrixStackPtr->modelViewProjectionMat;
 			a3shaderUniformSendFloatMat(a3unif_mat4, 0, currentDemoProgram->uMVP, 1, modelViewProjectionMat.mm);
@@ -293,7 +293,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 
 			break;
 		}
-		// ****TO-DO: 
+		// ****DONE: 
 		//	-> uncomment render call
 		a3shaderUniformSendInt(a3unif_single, currentDemoProgram->uIndex, 1, &j);
 		a3vertexDrawableActivateAndRender(drawable[j]);
@@ -312,7 +312,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 	// enable alpha
 	a3demo_enableCompositeBlending();
 
-	// ****TO-DO: 
+	// ****DONE: 
 	//	-> uncomment overlay rendering
 	// scene overlays
 	if (demoState->displayGrid || demoState->displayTangentBases || demoState->displayWireframe)
@@ -368,7 +368,7 @@ void a3intro_render(a3_DemoState const* demoState, a3_DemoMode0_Intro const* dem
 
 	}
 
-	// ****TO-DO: 
+	// ****DONE: 
 	//	-> uncomment axis rendering
 	// superimpose axes
 	// draw coordinate axes in front of everything

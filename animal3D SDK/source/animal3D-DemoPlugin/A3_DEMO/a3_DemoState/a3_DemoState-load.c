@@ -855,7 +855,7 @@ void a3demo_loadFramebuffers(a3_DemoState* demoState)
 	const a3ui32 targets_composite = 1;
 
 
-	 /****DONE:
+	 /****TO-DO:
 		//-> uncomment framebuffer initialization
 		-> initialize all framebuffers
 			(hint: their names describe their features)
@@ -871,6 +871,13 @@ void a3demo_loadFramebuffers(a3_DemoState* demoState)
 		frameWidth1, frameHeight1);
 	fbo = demoState->fbo_d32;
 	a3framebufferCreate(fbo, "fbo:32", 0, a3fbo_colorDisable, a3fbo_depth32, shadowMapSize, shadowMapSize);
+	
+	fbo = demoState->fbo_c16_szHalf + 0;
+	a3framebufferCreate(fbo, "fbo:c16Half", 1, a3fbo_colorRGBA16, a3fbo_depthDisable, frameWidth2, frameHeight2);
+
+	fbo = demoState->fbo_c16_szHalf + 1;
+	a3framebufferCreate(fbo, "fbo:c16Half", 1, a3fbo_colorRGBA16, a3fbo_depthDisable, frameWidth2, frameHeight2);
+
 
 
 	// ****DONE:

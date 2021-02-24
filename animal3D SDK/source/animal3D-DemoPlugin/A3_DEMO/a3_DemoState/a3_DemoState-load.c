@@ -887,12 +887,13 @@ void a3demo_loadFramebuffers(a3_DemoState* demoState)
 	a3framebufferCreate(fbo, "fbo:c16quarter", 1, a3fbo_colorRGBA16, a3fbo_depthDisable, frameHeight4, frameHeight4);
 
 	fbo = demoState->fbo_c16_szEighth + 0;
-	a3framebufferCreate(fbo, "bo:c16Eigth", 1, a3fbo_colorRGBA16, a3fbo_depthDisable, frameWidth8, frameHeight8);
+	a3framebufferCreate(fbo, "fbo:c16Eigth", 1, a3fbo_colorRGBA16, a3fbo_depthDisable, frameWidth8, frameHeight8);
 	fbo = demoState->fbo_c16_szEighth + 1;
 	a3framebufferCreate(fbo, "fbo:c16Eigth", 1, a3fbo_colorRGBA16, a3fbo_depthDisable, frameWidth8, frameHeight8);
 	fbo = demoState->fbo_c16_szEighth + 2;
-	a3framebufferCreate(fbo, "bo:c16Eigth", 1, a3fbo_colorRGBA16, a3fbo_depthDisable, frameHeight8, frameHeight8);
-
+	a3framebufferCreate(fbo, "fbo:c16Eigth", 1, a3fbo_colorRGBA16, a3fbo_depthDisable, frameHeight8, frameHeight8);
+	fbo = demoState->fbo_c16x4;
+	a3framebufferCreate(fbo, "fbo:c16x4", 1, a3fbo_colorRGBA16, a3fbo_depthDisable, frameHeight1, frameHeight1);
 
 
 	// ****DONE:

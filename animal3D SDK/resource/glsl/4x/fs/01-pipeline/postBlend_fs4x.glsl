@@ -29,10 +29,17 @@
 //	-> implement some sort of blending algorithm that highlights bright areas
 //		(hint: research some Photoshop blend modes)
 
+
+uniform sampler2D uImage00, uImage01, uImage02;
+
+
 layout (location = 0) out vec4 rtFragColor;
+
+
+in vec2 vTexcoord;
 
 void main()
 {
-	// DUMMY OUTPUT: all fragments are OPAQUE PURPLE
-	rtFragColor = vec4(0.5, 0.0, 1.0, 1.0);
+	// DUMMY OUTPUT: all fragments are OPAQUE GREEN
+	rtFragColor = texture(uImage00,vTexcoord);
 }

@@ -37,6 +37,7 @@ uniform sampler2D uTex_dm;
 
 void main()
 {
+//Found in bluebook with number modifications until it worked
 	vec3 color = texture(uTex_dm, vTexcoord_atlas.xy).xyz;
 
 	//Calculate Luminance

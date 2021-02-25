@@ -65,6 +65,7 @@ const float weights[] = float[](0.0024499299678342,
 
 void main()
 {
+//Found in bluebook with number modifications until it worked
 	// DUMMY OUTPUT: all fragments are OPAQUE AQUA
 	//rtFragColor = vec4(0.0, 1.0, 0.5, 1.0);
 	//rtFragColor = texture(uTex_dm, vTexcoord);

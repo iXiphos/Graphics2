@@ -93,7 +93,7 @@ void main()
 
 //  we think we are on to something with darkening the shadows but are stuck
 //	vec4 depthPass = textureProj(uTex_shadow, shadow_coord);
-//	vec4 val = step(vec4(0.8),depthPass);
+//	vec4 val = step(vec4(0.8), depthPass);
 
 	rtFragColor = result * textureProj(uTex_shadow, shadow_coord);
 }

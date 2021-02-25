@@ -41,6 +41,7 @@ in vec4 vTexcoord_atlas;
 
 void main()
 {
+//found in bluebook
 	// DUMMY OUTPUT: all fragments are OPAQUE GREEN
 	vec4 c = texture(uImage00, vTexcoord_atlas.xy) * 1.0;
 	vec4 cBloom = texture(uImage01, vTexcoord_atlas.xy);

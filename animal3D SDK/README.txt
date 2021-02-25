@@ -22,6 +22,13 @@
 	Some useful information about your animal3D distribution.
 -------------------------------------------------------------------------------
 
+
+/*
+* 
+*    With contributions from Christopher Foster and Aidan Murphy
+* 
+*/
+
 Welcome to "animal3D", the minimal 3D animation framework! This file has some 
 useful information about developing with animal3D.
 

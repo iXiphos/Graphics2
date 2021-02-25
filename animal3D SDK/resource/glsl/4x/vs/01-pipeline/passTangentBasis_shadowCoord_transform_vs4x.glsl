@@ -101,7 +101,7 @@ void main()
 	vInstanceID = gl_InstanceID;
 	vPosition = uModelMatrixStack[uIndex].modelViewMat * aPosition;
 	vTexcoord = aTexcoord;
-	vNormal = uModelMatrixStack[uIndex].modelMatInverseTranspose * aNormal; 
+	vNormal = uModelMatrixStack[uIndex].modelViewMatInverseTranspose * aNormal; 
 
 	mat4 shadowMat = uLightMatrixStack.viewProjectionBiasMat * uModelMatrixStack[uIndex].modelMat;
 	shadow_coord = shadowMat * aPosition; 

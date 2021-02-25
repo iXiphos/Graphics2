@@ -40,10 +40,12 @@ uniform int uCount;
 in vec4 vPosition;
 in vec4 vNormal;
 in vec2 vTexcoord;
+in vec4 shadow_coord;
 
 uniform vec4 uColor;
 
 uniform sampler2D uTex_dm;
+uniform sampler2D uTex_shadow;
 
 struct light{
 	vec4 lightPos;
@@ -62,6 +64,7 @@ uniform ubLight
 
 void main()
 {
+//Code Found in BlueBook
  vec4 result = vec4(0.0,0.0,0.0,1.0);
 
 	for(int i = 0; i < uCount; i++)
@@ -73,16 +76,22 @@ void main()
 		vec4 R = reflect (-L, N);
 		float NdotR = max(0.0, dot(N, R));
 		float NdotL = max(0.0, dot(N, L));
-		float attenuation = 50.0 / (pow(dist, 2.0) + 1.0);
 
-		vec3 diffuse_color = lightData[i].color.rgb * texture(uTex_dm,vTexcoord).rgb * NdotL * attenuation;
-		vec3 specular_color = lightData[i].color.rgb * pow(NdotR, texture(uTex_dm,vTexcoord).a) * attenuation;
 
-		result  += vec4(diffuse_color + specular_color, 0.0);
+		//Thornton Fernbacher helped us with our attentution Math
+		float a = dist/lightData[i].radius * 5;
+        float attenuation = 1.0/ ((a*a) + 2);
+
+		vec3 diffuse_color = lightData[i].color.rgb * NdotL * attenuation;
+		vec3 specular_color = lightData[i].color.rgb * pow(NdotR, 2) * attenuation;
+
+		
+		result  += vec4(diffuse_color + specular_color + vec3(0.1), 0.0) * texture(uTex_dm,vTexcoord);
 	}
 	
-	rtFragColor = result;
+	result = result * texture(uTex_dm,vTexcoord);
+	
 
-
-
+	rtFragColor = result * (textureProj(uTex_shadow, shadow_coord));
 }
+

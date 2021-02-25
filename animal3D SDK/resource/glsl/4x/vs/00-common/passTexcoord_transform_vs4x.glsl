@@ -22,6 +22,13 @@
 	Calculate final position and pass atlas texture coordinate.
 */
 
+
+/*
+* 
+*    With contributions from Christopher Foster and Aidan Murphy
+* 
+*/
+
 #version 450
 
 layout (location = 0) in vec4 aPosition;

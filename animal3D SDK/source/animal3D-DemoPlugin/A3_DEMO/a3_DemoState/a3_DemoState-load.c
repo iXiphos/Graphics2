@@ -28,6 +28,14 @@
 	****************************************************
 */
 
+
+
+/*
+*
+*    With contributions from Christopher Foster and Aidan Murphy
+*
+*/
+
 #include "../_a3_demo_utilities/a3_DemoMacros.h"
 
 

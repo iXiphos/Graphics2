@@ -22,6 +22,13 @@
 	Gaussian blur.
 */
 
+
+/*
+* 
+*    With contributions from Christopher Foster and Aidan Murphy
+* 
+*/
+
 #version 450
 
 // ****TO-DO:

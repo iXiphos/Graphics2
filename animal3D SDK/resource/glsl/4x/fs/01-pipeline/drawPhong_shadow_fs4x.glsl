@@ -22,9 +22,16 @@
 	Output Phong shading with shadow mapping.
 */
 
+
+/*
+* 
+*    With contributions from Christopher Foster and Aidan Murphy
+* 
+*/
+
 #version 450
 
-// ****TO-DO:
+// ****DONE:
 // 1) Phong shading
 //	-> identical to outcome of last project
 // 2) shadow mapping

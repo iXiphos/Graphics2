@@ -26,6 +26,13 @@
 	********************************************
 */
 
+
+/*
+*
+*    With contributions from Christopher Foster and Aidan Murphy
+*
+*/
+
 //-----------------------------------------------------------------------------
 
 #include "../a3_DemoMode1_PostProc.h"

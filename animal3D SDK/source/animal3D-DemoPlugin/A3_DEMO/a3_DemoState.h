@@ -26,6 +26,13 @@
 	********************************************
 */
 
+
+/*
+* 
+*    With contributions from Christopher Foster and Aidan Murphy
+* 
+*/
+
 #ifndef __ANIMAL3D_DEMOSTATE_H
 #define __ANIMAL3D_DEMOSTATE_H
 

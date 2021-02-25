@@ -92,6 +92,6 @@ void main()
 	result = result * texture(uTex_dm,vTexcoord);
 	
 
-	rtFragColor = result * (textureProj(uTex_shadow, shadow_coord));
+	rtFragColor =(result * 0.8) * (textureProj(uTex_shadow, shadow_coord) * 1.2);
 }
 

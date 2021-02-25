@@ -30,16 +30,27 @@
 //		(hint: research some Photoshop blend modes)
 
 
-uniform sampler2D uImage00, uImage01, uImage02;
+uniform sampler2D uImage00, uImage01, uImage02, uImage03;
 
 
 layout (location = 0) out vec4 rtFragColor;
 
 
-in vec2 vTexcoord;
+in vec4 vTexcoord_atlas;
+
 
 void main()
 {
 	// DUMMY OUTPUT: all fragments are OPAQUE GREEN
-	rtFragColor = texture(uImage00,vTexcoord);
+	vec4 c = texture(uImage00, vTexcoord_atlas.xy) * 1.0;
+	vec4 cBloom = texture(uImage01, vTexcoord_atlas.xy);
+	cBloom += texture(uImage02, vTexcoord_atlas.xy);
+	cBloom += texture(uImage03, vTexcoord_atlas.xy);
+
+	c = c + cBloom * 1.0;
+
+	c.rgb = vec3(1.0) - exp(-c.rgb * 0.9);
+	
+	
+	rtFragColor = c;
 }

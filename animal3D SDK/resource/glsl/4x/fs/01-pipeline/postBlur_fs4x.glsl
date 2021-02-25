@@ -32,7 +32,7 @@
 
 layout (location = 0) out vec4 rtFragColor;
 
-in vec2 vTexcoord;
+in vec4 vTexcoord_atlas;
 uniform sampler2D uImage00;
 uniform sampler2D uTex_dm;
 uniform vec2 uAxis;
@@ -74,14 +74,14 @@ void main()
 	//		Vec2 for offset:: ????
 	//Color accumulates
 	vec4 c = vec4(0.0);
-	vec2 p = uAxis - vec2(0, weights.length() >> 1);
+	vec2 p = vTexcoord_atlas.xy - (uAxis * 12.5);
 	int i;
 
 	for(i = 0; i < weights.length(); i++)
 	{
-		c = texture(uImage00, p + vec2(0, i), 0) * weights[i];
+		c += texture(uTex_dm, p + (uAxis * i), 0) * weights[i];
 	}
 
-	rtFragColor = c * texture(uTex_dm, vTexcoord);
+	rtFragColor = c;
 
 }

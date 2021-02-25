@@ -42,7 +42,7 @@ void main()
 	//Calculate Luminance
 	float y = dot(color, vec3(0.299, 0.587, 0.144));
 
-	color = color * 4.0 * smoothstep(0.4, 1.6, y);
+	color = color * 4.0 * smoothstep(0.5, 2.0, y);
 
 	rtFragColor = vec4(color, 1.0);
 }

@@ -527,8 +527,6 @@ void a3postproc_render(a3_DemoState const* demoState, a3_DemoMode1_PostProc cons
 	a3framebufferBindColorTexture(writeFBO[postproc_renderPassBlurV4], a3tex_unit02, 0);
 	a3framebufferBindColorTexture(writeFBO[postproc_renderPassBlurV8], a3tex_unit03, 0);
 
-
-
 	currentWriteFBO = writeFBO[postproc_renderPassDisplay];// this is correct because later renderPass is equal to pp_rPDw
 	a3framebufferActivate(currentWriteFBO);
 	a3vertexDrawableRenderActive();

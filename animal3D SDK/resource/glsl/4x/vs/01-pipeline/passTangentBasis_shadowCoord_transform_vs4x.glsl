@@ -35,12 +35,12 @@
 //		but per usual the final clip-space result is assigned to gl_Position)
 //	-> declare relevant attributes for lighting
 //	-> perform any additional transformations and write varyings for lighting
-// 2) shadow mapping
+// 2) shadow mapping //DONE
 //	-> using the above setup, perform additional transformation to generate a 
 //		"shadow coordinate", which is a "biased clip-space" coordinate from 
 //		the light's point of view
 //		(hint: transformation sequence is model-view-projection-bias)
-//	-> declare and write varying for shadow coordinate
+//	-> declare and write varying for shadow coordinate  //DONE
 
 
 //matrix stack strucks 
@@ -69,11 +69,19 @@ struct sModelMatrixStack
 };
 
 layout (location = 0) in vec4 aPosition;
+layout (location = 2) in vec4 aNormal;
+layout (location = 8) in vec2 aTexcoord;
+
 
 flat out int vVertexID;
 flat out int vInstanceID;
+out vec4 vPosition;
+out vec2 vTexcoord;
+out vec4 vNormal;
+out vec4 shadow_coord;
 
 uniform int uIndex;
+
 
 //ubo_transform
 // -> projector stack for camera, light
@@ -88,8 +96,13 @@ uniform ubTransformStack
 void main()
 {
 	// DUMMY OUTPUT: directly assign input position to output position
-	gl_Position = uCameraMatrixStack.projectionMat * uModelMatrixStack[uIndex].modelViewMat * aPosition; //aPosition;
-
+	gl_Position = uCameraMatrixStack.projectionMat * uModelMatrixStack[uIndex].modelViewMat * aPosition; 
 	vVertexID = gl_VertexID;
 	vInstanceID = gl_InstanceID;
+	vPosition = uModelMatrixStack[uIndex].modelViewMat * aPosition;
+	vTexcoord = aTexcoord;
+	vNormal = uModelMatrixStack[uIndex].modelMatInverseTranspose * aNormal; 
+
+	mat4 shadowMat = uLightMatrixStack.viewProjectionBiasMat * uModelMatrixStack[uIndex].modelMat;
+	shadow_coord = shadowMat * aPosition; 
 }

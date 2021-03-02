@@ -235,7 +235,7 @@ void a3ssfx_render(a3_DemoState const* demoState, a3_DemoMode2_SSFX const* demoM
 
 	// final model matrix and full matrix stack
 	a3mat4 projectionMat = activeCamera->projectorMatrixStackPtr->projectionMat;
-//	a3mat4 projectionBiasMatInv = activeCamera->projectorMatrixStackPtr->projectionBiasMatInverse;
+	a3mat4 projectionBiasMatInv = activeCamera->projectorMatrixStackPtr->projectionBiasMatInverse;
 	a3mat4 viewProjectionMat = activeCamera->projectorMatrixStackPtr->viewProjectionMat;
 	a3mat4 modelMat, modelViewMat, modelViewProjectionMat;
 
@@ -326,9 +326,20 @@ void a3ssfx_render(a3_DemoState const* demoState, a3_DemoMode2_SSFX const* demoM
 		//	-> activate and send pertinent uniform blocks and values
 		//		(hint: light buffer, light transforms, inverse bias-projection)
 		//		(hint: inverse bias-projection variable is commented out above)
-	/*	// draw light volumes
+		// draw light volumes
 		currentDemoProgram = demoState->prog_drawPhongPointLight_instanced;
 		a3shaderProgramActivate(currentDemoProgram->program);
+
+		a3textureActivate(demoState->tex_atlas_dm, a3tex_unit00);
+		a3textureActivate(demoState->tex_atlas_sm, a3tex_unit01);
+		a3textureActivate(demoState->tex_atlas_nm, a3tex_unit02);
+		a3textureActivate(demoState->tex_atlas_hm, a3tex_unit03);
+
+		a3shaderUniformBufferActivate(demoState->ubo_light, demoProg_blockLight);
+		a3shaderUniformBufferActivate(demoState->ubo_transform + sizeof(demoMode->pointLightData), demoProg_blockLight);
+		a3shaderUniformSendFloatMat(a3unif_mat4, 0, currentDemoProgram->uPB_inv, 1, projectionBiasMatInv.m);
+		
+
 		//...*/
 
 		currentWriteFBO = writeFBO[ssfx_renderPassLights];
@@ -338,6 +349,11 @@ void a3ssfx_render(a3_DemoState const* demoState, a3_DemoMode2_SSFX const* demoM
 		// ****TO-DO:
 		//	-> draw many inverted instances of the unit sphere model (because 
 		//		point lights are spheres), and using additive blending
+		for (int i = 0; i < ssfxMaxCount_pointLight; i++)
+		{
+			a3shaderUniformSendInt(a3unif_single, currentDemoProgram->uIndex, 1, &demoMode->obj_sphere->sceneHierarchyIndex);
+			a3vertexDrawableActivateAndRender(drawable[demoMode->obj_sphere->sceneHierarchyIndex]);
+		}
 
 	}
 
@@ -346,7 +362,7 @@ void a3ssfx_render(a3_DemoState const* demoState, a3_DemoMode2_SSFX const* demoM
 	// COMPOSITION
 	//	- activate target framebuffer
 	//	- draw background if applicable
-
+	
 	// skybox
 	currentWriteFBO = writeFBO[ssfx_renderPassComposite];
 	a3framebufferActivate(currentWriteFBO);

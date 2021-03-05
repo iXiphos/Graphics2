@@ -49,7 +49,7 @@ void a3ssfx_update_graphics(a3_DemoState* demoState, a3_DemoMode2_SSFX* demoMode
 	a3bufferRefillOffset(demoState->ubo_transform, 0, 0, sizeof(demoMode->modelMatrixStack), demoMode->modelMatrixStack);
 	a3bufferRefillOffset(demoState->ubo_light, 0, 0, sizeof(demoMode->pointLightData), demoMode->pointLightData);
 
-	a3bufferRefillOffset(demoState->ubo_transform, 0, sizeof(demoMode->modelMatrixStack), sizeof(demoMode->pointLightMVP), demoMode->pointLightMVP);
+	a3bufferRefillOffset(demoState->ubo_mvp, 0, 0, sizeof(demoMode->pointLightMVP), demoMode->pointLightMVP);
 	//...*/
 }
 
@@ -131,10 +131,25 @@ void a3ssfx_update_scene(a3_DemoState* demoState, a3_DemoMode2_SSFX* demoMode, a
 		//		(hint: determine the scale part, append position and multiply by 
 		//			projection matrix to arrive at a proper MVP for each light)
 		// update and transform light matrix
-		a3real4Real4x4Product(pointLightMVP->m,
-			projector->sceneObjectPtr->modelMatrixStackPtr->modelViewProjectionMat.m,
-			pointLightData->position.v);
+		
+		a3mat4 lightMat;
 
+		lightMat = a3mat4_identity;
+
+		//scale
+		lightMat.x0 *= pointLightData->radius;
+		lightMat.y1 *= pointLightData->radius;
+		lightMat.z2 *= pointLightData->radius;
+		lightMat.w3 = 1;
+
+		lightMat.x3 = pointLightData->position.x;
+		lightMat.y3 = pointLightData->position.y;
+		lightMat.z3 = pointLightData->position.z;
+
+
+		a3real4x4Product(pointLightMVP->m, lightMat.m, projector->projectorMatrixStackPtr->viewProjectionMat.m);
+
+		
 		//...*/
 	}
 }

@@ -43,10 +43,42 @@ in vec4 vTexcoord_atlas;
 
 uniform int uCount;
 
+uniform sampler2D uImage00; // diffuse
+uniform sampler2D uImage01; // specular
+
+uniform sampler2D uImage04; // scene texcoord
+uniform sampler2D uImage05; // normal
+uniform sampler2D uImage06; // "position"
+uniform sampler2D uImage07; // depth
 layout (location = 0) out vec4 rtFragColor;
 
 void main()
 {
 	// DUMMY OUTPUT: all fragments are OPAQUE ORANGE
-	rtFragColor = vec4(1.0, 0.5, 0.0, 1.0);
+	//rtFragColor = vec4(1.0, 0.5, 0.0, 1.0);
+
+	//Phone:
+	// ambient`
+	// + diffuse color + diffuse light
+	// + specular color * diffuse light
+	// 
+	//have:
+	// -> difuse and specular color -> atlases
+	// -> "attributes" for model/scene data
+	//   ->some framebuffers???
+	//     ->G-Buffers
+	//have not:
+	// ->lights
+
+	//draw objects with diffuse texture applied
+	// use screenspace coordinate to sameple uImage04
+	// sample atlas using sceneTexcoords
+
+	vec4 screenTexcoord = texture(uImage04, vTexcoord_atlas.xy);
+	vec4 diffuseSample = texture(uImage00, screenTexcoord.xy);
+	vec4 specularSample = texture(uImage01, screenTexcoord.xy);
+
+	//DEBUG
+	rtFragColor = texture(uImage00, vTexcoord_atlas.xy);
+	rtFragColor = texture(uImage01, vTexcoord_atlas.xy);
 }

@@ -330,14 +330,14 @@ void a3ssfx_render(a3_DemoState const* demoState, a3_DemoMode2_SSFX const* demoM
 		currentDemoProgram = demoState->prog_drawPhongPointLight_instanced;
 		a3shaderProgramActivate(currentDemoProgram->program);
 
-		a3textureActivate(demoState->tex_atlas_dm, a3tex_unit00);
-		a3textureActivate(demoState->tex_atlas_sm, a3tex_unit01);
-		a3textureActivate(demoState->tex_atlas_nm, a3tex_unit02);
-		a3textureActivate(demoState->tex_atlas_hm, a3tex_unit03);
+		//currentWriteFBO = writeFBO[ssfx_renderPassScene]; //demoState->fbo_c16x4_d24s8
+		//a3framebufferActivate(currentWriteFBO);
+
+		a3framebufferBindColorTexture(demoState->fbo_c16x4_d24s8, a3tex_unit00, 0);
 
 		a3shaderUniformBufferActivate(demoState->ubo_light, demoProg_blockLight);
 		a3shaderUniformBufferActivate(demoState->ubo_transform + sizeof(demoMode->pointLightData), demoProg_blockLight);
-		a3shaderUniformSendFloatMat(a3unif_mat4, 0, currentDemoProgram->uPB_inv, 1, projectionBiasMatInv.m);
+		a3shaderUniformSendFloatMat(a3unif_mat4, 0, currentDemoProgram->uPB_inv, 1, projectionBiasMatInv.mm);
 		
 
 		//...*/
@@ -399,12 +399,19 @@ void a3ssfx_render(a3_DemoState const* demoState, a3_DemoMode2_SSFX const* demoM
 		//		(hint: all outputs from previous passes)
 		//	-> activate and send pertinent uniform blocks and values
 		//		(hint: light buffer, light count, inverse bias-projection)
-	/*	// deferred shading
+		// deferred shading
 		//	- similar to light pre-pass but all at once on FSQ
 		currentDemoProgram = demoState->prog_postDeferredShading;
 		a3shaderProgramActivate(currentDemoProgram->program);
 		a3textureActivate(demoState->tex_atlas_dm, a3tex_unit00); // diffuse texture atlas
-		//...*/
+
+		a3framebufferBindColorTexture(demoState->fbo_c16x4_d24s8, a3tex_unit04, 0); //texcoords
+		a3framebufferBindColorTexture(demoState->fbo_c16x4_d24s8, a3tex_unit05, 1); // normals
+		a3framebufferBindColorTexture(demoState->fbo_c16x4_d24s8, a3tex_unit06, 3); // "position"
+		a3framebufferBindDepthTexture(demoState->fbo_c16x4_d24s8, a3tex_unit04); //depth
+
+
+		//...
 		break;
 	case ssfx_renderModePhongDL:
 		// ****TO-DO:

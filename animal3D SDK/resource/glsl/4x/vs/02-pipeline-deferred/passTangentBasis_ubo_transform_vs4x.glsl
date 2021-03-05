@@ -60,13 +60,14 @@ uniform int uIndex;
 
 flat out int vVertexID;
 flat out int vInstanceID;
+flat out vec4 vPosition;
+flat out vec3 vNormal;
 
 void main()
 {
 	// DUMMY OUTPUT: directly assign input position to output position
 	gl_Position = uModelMatrixStack[uIndex].modelViewProjectionMat * aPosition;
 	vPosition = uModelMatrixStack[uIndex].modelViewMat * aPosition;
-
 	vNormal = uModelMatrixStack[uIndex].modelViewMatInverseTranspose * vec3(1.0);
 
 

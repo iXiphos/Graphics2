@@ -48,7 +48,6 @@ void a3ssfx_update_graphics(a3_DemoState* demoState, a3_DemoMode2_SSFX* demoMode
 	// upload
 	a3bufferRefillOffset(demoState->ubo_transform, 0, 0, sizeof(demoMode->modelMatrixStack), demoMode->modelMatrixStack);
 	a3bufferRefillOffset(demoState->ubo_light, 0, 0, sizeof(demoMode->pointLightData), demoMode->pointLightData);
-
 	a3bufferRefillOffset(demoState->ubo_mvp, 0, 0, sizeof(demoMode->pointLightMVP), demoMode->pointLightMVP);
 	//...*/
 }

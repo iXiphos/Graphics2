@@ -60,15 +60,27 @@ uniform int uIndex;
 
 flat out int vVertexID;
 flat out int vInstanceID;
-flat out vec4 vPosition;
-flat out vec3 vNormal;
+out vec4 vPosition;
+out vec4 vNormal;
+out vec4 vTexcoord;
+out vec4 vPosition_screen;
+
+const mat4 bias = mat4(
+	0.5, 0.0, 0.0, 0.0,
+	0.0, 0.5, 0.0, 0.0,
+	0.0, 0.0, 0.5, 0.0,
+	0.5, 0.5, 0.5, 1.0
+);
 
 void main()
 {
 	// DUMMY OUTPUT: directly assign input position to output position
 	gl_Position = uModelMatrixStack[uIndex].modelViewProjectionMat * aPosition;
+
+	vPosition_screen = bias * gl_Position;
 	vPosition = uModelMatrixStack[uIndex].modelViewMat * aPosition;
-	vNormal = uModelMatrixStack[uIndex].modelViewMatInverseTranspose * vec3(1.0);
+	vNormal = uModelMatrixStack[uIndex].modelViewMatInverseTranspose * vec4(aNormal, 0.0);
+	vTexcoord = uModelMatrixStack[uIndex].atlasMat * aTexcoord;
 
 
 

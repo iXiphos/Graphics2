@@ -50,6 +50,7 @@ uniform sampler2D uImage04; // scene texcoord
 uniform sampler2D uImage05; // normal
 uniform sampler2D uImage06; // "position"
 uniform sampler2D uImage07; // depth
+uniform mat4 uPB_inv;
 layout (location = 0) out vec4 rtFragColor;
 
 void main()
@@ -78,7 +79,26 @@ void main()
 	vec4 diffuseSample = texture(uImage00, screenTexcoord.xy);
 	vec4 specularSample = texture(uImage01, screenTexcoord.xy);
 
+	//Turn into screen space
+	vec4 position_screen = vTexcoord_atlas;
+	position_screen.z = texture(uImage07, vTexcoord_atlas.xy).r;
+
+	//Turn into view space
+	vec4 position_view = position_screen * uPB_inv;
+	position_view /= position_view.w;
+
+	//Fix Normal
+	vec4 normal_view = texture(uImage05, vTexcoord_atlas.xy);
+	normal_view = (normal_view - 0.5) * 2;
+	
+
 	//DEBUG
-	rtFragColor = texture(uImage00, vTexcoord_atlas.xy);
-	rtFragColor = texture(uImage01, vTexcoord_atlas.xy);
+	//rtFragColor = texture(uImage00, vTexcoord_atlas.xy);
+	//rtFragColor = texture(uImage01, vTexcoord_atlas.xy);
+
+	//Use phong function for each light
+	rtFragColor = position_screen;
+
+	//Transparency
+	rtFragColor.a = diffuseSample.a;
 }

@@ -29,6 +29,9 @@
 #define iValInvSq	3
 
 
+
+
+
 float lenSq(float x)
 {
 	return (x * x);

@@ -42,10 +42,8 @@
 in vec4 vTexcoord_atlas;
 
 uniform int uCount;
-
 uniform sampler2D uImage00; // diffuse
 uniform sampler2D uImage01; // specular
-
 uniform sampler2D uImage04; // scene texcoord
 uniform sampler2D uImage05; // normal
 uniform sampler2D uImage06; // "position"
@@ -53,28 +51,29 @@ uniform sampler2D uImage07; // depth
 uniform mat4 uPB_inv;
 layout (location = 0) out vec4 rtFragColor;
 
+struct sPointLight
+{
+	vec4 pos,worldPos,color, radii;
+};
+
+uniform ubLight
+{
+	sPointLight lightData[4];
+};
+
+void calcPhongPoint(
+	out vec4 diffuseColor, out vec4 specularColor,
+	in vec4 eyeVec, in vec4 fragPos, in vec4 fragNrm, in vec4 fragColor,
+	in vec4 lightPos, in vec4 lightRadiusInfo, in vec4 lightColor
+);
+
+const vec4 kEyePos_view = vec4(0.0, 0.0, 0.0, 1.0);
+
+
 void main()
 {
-	// DUMMY OUTPUT: all fragments are OPAQUE ORANGE
-	//rtFragColor = vec4(1.0, 0.5, 0.0, 1.0);
-
-	//Phone:
-	// ambient`
-	// + diffuse color + diffuse light
-	// + specular color * diffuse light
-	// 
-	//have:
-	// -> difuse and specular color -> atlases
-	// -> "attributes" for model/scene data
-	//   ->some framebuffers???
-	//     ->G-Buffers
-	//have not:
-	// ->lights
-
-	//draw objects with diffuse texture applied
-	// use screenspace coordinate to sameple uImage04
-	// sample atlas using sceneTexcoords
-
+	
+	//code from class
 	vec4 screenTexcoord = texture(uImage04, vTexcoord_atlas.xy);
 	vec4 diffuseSample = texture(uImage00, screenTexcoord.xy);
 	vec4 specularSample = texture(uImage01, screenTexcoord.xy);
@@ -84,21 +83,41 @@ void main()
 	position_screen.z = texture(uImage07, vTexcoord_atlas.xy).r;
 
 	//Turn into view space
-	vec4 position_view = position_screen * uPB_inv;
+	vec4 position_view = uPB_inv * position_screen;
 	position_view /= position_view.w;
 
 	//Fix Normal
-	vec4 normal_view = texture(uImage05, vTexcoord_atlas.xy);
+	vec4 normal_view = texture(uImage05, vTexcoord_atlas.xy); 
 	normal_view = (normal_view - 0.5) * 2;
 	
+	//*******//
+	
 
-	//DEBUG
-	//rtFragColor = texture(uImage00, vTexcoord_atlas.xy);
-	//rtFragColor = texture(uImage01, vTexcoord_atlas.xy);
+	vec4 diffuseLight = vec4(0.0,0.0,0.0,1.0);
+	vec4 specularLight = vec4(0.0,0.0,0.0,1.0);
+	for(int i = 0; i < uCount; i++)
+	{
+	
+		vec4 diffuseColor;
+		vec4 specularColor;
+		calcPhongPoint(diffuseColor, specularColor, normalize(kEyePos_view - position_view), position_view, normal_view, vec4(1), lightData[i].pos, lightData[i].radii, lightData[i].color);
 
-	//Use phong function for each light
-	rtFragColor = position_screen;
+		diffuseLight += diffuseColor;
+		specularLight += specularColor;
+	
+	}
 
-	//Transparency
+
+	rtFragColor = (diffuseSample * diffuseLight) + (specularSample * specularLight);
 	rtFragColor.a = diffuseSample.a;
+
+//	rtFragColor = diffuseSample;
+//	rtFragColor = specularSample;
+//	rtFragColor = position_screen;
+//	rtFragColor = normal_view;
+//	rtFragColor = vTexcoord_atlas;
+//	rtFragColor = position_screen;
+//	rtFragColor = texture(uImage07, vTexcoord_atlas.xy);
+
+
 }

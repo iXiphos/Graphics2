@@ -37,7 +37,7 @@
 
 layout (location = 0) in vec4 aPosition;
 layout (location = 2) in vec4 aNormal;
-layout (location = 8) in vec2 aTexcoord;
+layout (location = 8) in vec4 aTexcoord;
 layout (location = 10) in vec4 aTangent;
 layout (location = 11) in vec4 aBitangent;
 
@@ -79,8 +79,8 @@ void main()
 
 	vPosition_screen = bias * gl_Position;
 	vPosition = uModelMatrixStack[uIndex].modelViewMat * aPosition;
-	vNormal = uModelMatrixStack[uIndex].modelViewMatInverseTranspose * vec4(aNormal, 0.0);
-	vTexcoord = uModelMatrixStack[uIndex].atlasMat * aTexcoord;
+	vNormal = uModelMatrixStack[uIndex].modelViewMatInverseTranspose * aNormal;
+	vTexcoord = uModelMatrixStack[uIndex].atlasMat * vec4(aTexcoord);
 
 
 

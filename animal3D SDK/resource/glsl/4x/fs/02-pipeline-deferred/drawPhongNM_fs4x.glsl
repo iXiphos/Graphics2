@@ -36,12 +36,38 @@
 //	-> implement loop in main to calculate and accumulate light
 //	-> calculate and output final Phong sum
 
-uniform int uCount;
 
-layout (location = 0) out vec4 rtFragColor;
 
 // location of viewer in its own space is the origin
 const vec4 kEyePos_view = vec4(0.0, 0.0, 0.0, 1.0);
+
+
+layout (location = 0) out vec4 rtFragColor;
+
+uniform int uCount;
+uniform sampler2D uImage00; // diffuse
+uniform sampler2D uImage01; // specular
+uniform sampler2D uImage02; // normal
+uniform sampler2D uImage03; // height
+
+uniform mat4 uPB_inv;
+
+in vec4 vPosition;
+in vec4 vNormal;
+in vec4 vTexcoord;
+in vec4 vPosition_screen;
+
+
+
+struct sPointLight
+{
+	vec4 pos,worldPos,color, radii;
+};
+
+uniform ubLight
+{
+	sPointLight lightData[4];
+};
 
 // declaration of Phong shading model
 //	(implementation in "utilCommon_fs4x.glsl")
@@ -60,8 +86,49 @@ void calcPhongPoint(
 	in vec4 lightPos, in vec4 lightRadiusInfo, in vec4 lightColor
 );
 
+
+
 void main()
 {
-	// DUMMY OUTPUT: all fragments are OPAQUE MAGENTA
-	rtFragColor = vec4(1.0, 0.0, 1.0, 1.0);
+
+	vec4 diffuseSample = texture(uImage00, vTexcoord.xy);
+	vec4 specularSample = texture(uImage01, vTexcoord.xy);
+
+	//Turn into view space
+	vec4 position_view = uPB_inv * vPosition_screen;
+	position_view /= position_view.w;
+
+	//Fix Normal
+	vec4 normal_view = texture(uImage02, vTexcoord.xy); 
+	normal_view = (normal_view - 0.5) * 2;
+	normal_view = normal_view + normalize(vNormal);
+	
+	
+
+	vec4 diffuseLight = vec4(0.0,0.0,0.0,1.0);
+	vec4 specularLight = vec4(0.0,0.0,0.0,1.0);
+	for(int i = 0; i < uCount; i++)
+	{
+	
+		vec4 diffuseColor;
+		vec4 specularColor;
+		calcPhongPoint(diffuseColor, specularColor, normalize(kEyePos_view - position_view), position_view, normal_view, vec4(1), lightData[i].pos, lightData[i].radii, lightData[i].color);
+
+		diffuseLight += diffuseColor;
+		specularLight += specularColor;
+	
+	}
+
+
+	rtFragColor = (diffuseSample * diffuseLight) + (specularSample * specularLight);
+	rtFragColor.a = diffuseSample.a;
+
+//	rtFragColor = diffuseSample;
+//	rtFragColor = specularSample;
+//	rtFragColor = vPosition_screen;
+	rtFragColor = normal_view;
+//	rtFragColor = vTexcoord;
+    rtFragColor.a = 1;
+
+
 }

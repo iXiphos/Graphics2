@@ -17,6 +17,7 @@
 /*
 	animal3D SDK: Minimal 3D Animation Framework
 	By Daniel S. Buckstein
+	With contributions from Aidan Murphy and Chris Foster
 	
 	passTangentBasis_ubo_transform_vs4x.glsl
 	Calculate and pass tangent basis using uniform buffers.
@@ -52,7 +53,7 @@ struct sModelMatrixStack
 	mat4 modelViewProjectionMat;		// model-view-projection matrix (object -> clip)
 	mat4 atlasMat;						// atlas matrix (texture -> cell)
 };
-uniform ubTransformStack
+uniform ubTransformMVP
 {
 	sModelMatrixStack uModelMatrixStack[MAX_OBJECTS];
 };

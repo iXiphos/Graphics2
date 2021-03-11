@@ -40,8 +40,8 @@
 flat in int vInstanceID;
 
 //layout (location = 0) out vec4 rtFragColor;
-layout (location = 0) out vec4 rtDiffuseLight;
-layout(location = 1) out vec4 rtSpecularLight;
+//layout (location = 0) out vec4 rtDiffuseLight;
+//layout(location = 1) out vec4 rtSpecularLight;
 
 void main()
 {

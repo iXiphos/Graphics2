@@ -149,7 +149,10 @@ void calcPhongPoint2(out vec4 diffuseColor, out vec4 specularColor, in vec4 eyeV
 	specularColor = color * ks;
 }
 
-
+struct sPointLight
+{
+	vec4 pos,worldPos,color, radii;
+};
 void initDefaultPoint(out sPointLight light)
 {
 	const float r = 256.0, rSq = r * r, rInv = 1.0 / r, rSqInv = 1.0 / rSq;

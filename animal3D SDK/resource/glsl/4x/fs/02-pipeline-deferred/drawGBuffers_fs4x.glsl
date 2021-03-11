@@ -17,7 +17,8 @@
 /*
 	animal3D SDK: Minimal 3D Animation Framework
 	By Daniel S. Buckstein
-	
+	With contributions from Aidan Murphy and Chris Foster
+
 	drawGBuffers_fs4x.glsl
 	Output g-buffers for use in future passes.
 */

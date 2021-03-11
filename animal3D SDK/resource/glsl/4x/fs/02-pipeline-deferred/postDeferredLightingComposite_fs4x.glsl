@@ -17,6 +17,7 @@
 /*
 	animal3D SDK: Minimal 3D Animation Framework
 	By Daniel S. Buckstein
+	With contributions from Aidan Murphy and Chris Foster
 	
 	postDeferredLightingComposite_fs4x.glsl
 	Composite results of light pre-pass in deferred pipeline.

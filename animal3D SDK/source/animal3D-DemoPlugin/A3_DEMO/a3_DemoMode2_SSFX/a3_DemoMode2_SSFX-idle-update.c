@@ -17,6 +17,7 @@
 /*
 	animal3D SDK: Minimal 3D Animation Framework
 	By Daniel S. Buckstein
+	With contributions from Aidan Murphy and Chris Foster
 	
 	a3_DemoMode2_SSFX-idle-update.c
 	Demo mode implementations: animation scene.

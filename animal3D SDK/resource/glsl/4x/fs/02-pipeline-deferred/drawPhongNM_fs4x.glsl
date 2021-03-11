@@ -66,7 +66,7 @@ struct sPointLight
 
 uniform ubLight
 {
-	sPointLight lightData[4];
+	sPointLight lightData[MAX_LIGHTS];
 };
 
 // declaration of Phong shading model
@@ -95,13 +95,18 @@ void main()
 	vec4 specularSample = texture(uImage01, vTexcoord.xy);
 
 	//Turn into view space
-	vec4 position_view = uPB_inv * vPosition_screen;
+	vec4 position_view = vPosition_screen;
 	position_view /= position_view.w;
 
 	//Fix Normal
-	vec4 normal_view = texture(uImage02, vTexcoord.xy); 
-	normal_view = (normal_view - 0.5) * 2;
-	normal_view = normal_view + normalize(vNormal);
+	vec4 normal_view =  vNormal; 
+	//normal_view = normal_view * 0.5 + 0.5;
+	//normal_view =  normalize(normal_view);
+	normal_view *= texture(uImage02, vTexcoord.xy);
+	normal_view *= 0.1;
+	//normal_view -= 0.1;
+	normal_view = normalize(normal_view);
+	normal_view += 0.0;
 	
 	
 
@@ -112,7 +117,7 @@ void main()
 	
 		vec4 diffuseColor;
 		vec4 specularColor;
-		calcPhongPoint(diffuseColor, specularColor, normalize(kEyePos_view - position_view), position_view, normal_view, vec4(1), lightData[i].pos, lightData[i].radii, lightData[i].color);
+		calcPhongPoint(diffuseColor, specularColor, normalize( kEyePos_view - vPosition_screen), position_view, normal_view, vec4(1), lightData[i].pos, lightData[i].radii, lightData[i].color);
 
 		diffuseLight += diffuseColor;
 		specularLight += specularColor;
@@ -126,9 +131,10 @@ void main()
 //	rtFragColor = diffuseSample;
 //	rtFragColor = specularSample;
 //	rtFragColor = vPosition_screen;
-	rtFragColor = normal_view;
+//	rtFragColor = normal_view;
 //	rtFragColor = vTexcoord;
-    rtFragColor.a = 1;
+    rtFragColor = diffuseLight;
+	rtFragColor.a = 1;
 
 
 }

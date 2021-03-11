@@ -72,6 +72,7 @@ const mat4 bias = mat4(
 	0.5, 0.5, 0.5, 1.0
 );
 
+
 void main()
 {
 	// DUMMY OUTPUT: directly assign input position to output position
@@ -80,6 +81,7 @@ void main()
 	vPosition_screen = bias * gl_Position;
 	vPosition = uModelMatrixStack[uIndex].modelViewMat * aPosition;
 	vNormal = uModelMatrixStack[uIndex].modelViewMatInverseTranspose * aNormal;
+	
 	vTexcoord = uModelMatrixStack[uIndex].atlasMat * vec4(aTexcoord);
 
 

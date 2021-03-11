@@ -58,7 +58,7 @@ struct sPointLight
 
 uniform ubLight
 {
-	sPointLight lightData[4];
+	sPointLight lightData[MAX_LIGHTS];
 };
 
 void calcPhongPoint(
@@ -88,7 +88,8 @@ void main()
 
 	//Fix Normal
 	vec4 normal_view = texture(uImage05, vTexcoord_atlas.xy); 
-	normal_view = (normal_view - 0.5) * 2;
+	//normal_view = (normal_view - 0.5) * 2;
+	
 	
 	//*******//
 	
@@ -118,6 +119,7 @@ void main()
 //	rtFragColor = vTexcoord_atlas;
 //	rtFragColor = position_screen;
 //	rtFragColor = texture(uImage07, vTexcoord_atlas.xy);
+//rtFragColor = texture(uImage05, vTexcoord_atlas.xy);
 
 
 }

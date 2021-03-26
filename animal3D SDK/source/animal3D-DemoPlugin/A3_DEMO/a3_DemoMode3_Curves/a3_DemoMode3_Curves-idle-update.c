@@ -59,6 +59,9 @@ void a3curves_update_animation(a3_DemoState* demoState, a3_DemoMode3_Curves* dem
 		//	-> update the animation timer
 		//		(hint: check if we've surpassed the segment's duration)
 		// teapot follows curved path
+	
+		//Get one of the timers and update(dt?)
+		//Why in callback if we do here
 
 		
 	}

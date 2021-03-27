@@ -63,7 +63,63 @@ void a3curves_update_animation(a3_DemoState* demoState, a3_DemoMode3_Curves* dem
 		//Get one of the timers and update(dt?)
 		//Why in callback if we do here
 
+		/* http://paulbourke.net/miscellaneous/interpolation/ */
+
+		a3vec4 loc = {0,0,0,0};
+		a3real x0 = demoMode->curveWaypoint[0].x;
+		a3real x1 = demoMode->curveWaypoint[1].x;
+		a3real x2 = demoMode->curveWaypoint[2].x;
+		a3real x3 = demoMode->curveWaypoint[3].x;
+
+		a3real b0, b1, b2, b3, mu2;
+		mu2 = demoMode->curveSegmentDuration * demoMode->curveSegmentDuration;
+		b0 = -0.5f * x0 + 1.5f * x1 - 1.5f * x2 + 0.5f * x3;
+		b1 = x0 - 2.5f * x1 + 2.f * x2 - 0.5f * x3;
+		b2 = -0.5f * x0 + 0.5f * x2;
+		b3 = x1;
+
+		loc.x = (a3real)(b0 * dt * mu2 + b1 * mu2 + b2 * dt + b3);
+
+		/************************************************/
+		a3real y0 = demoMode->curveWaypoint[0].y;
+		a3real y1 = demoMode->curveWaypoint[1].y;
+		a3real y2 = demoMode->curveWaypoint[2].y;
+		a3real y3 = demoMode->curveWaypoint[3].y;
+
+		a3real a0, a1, a2, a3;
+		a0 = -0.5f * y0 + 1.5f * y1 - 1.5f * y2 + 0.5f * y3;
+		a1 = y0 - 2.5f * y1 + 2.f * y2 - 0.5f * y3;
+		a2 = -0.5f * y0 + 0.5f* y2;
+		a3 = y1;
+
+		loc.y = (a3real)(a0 * dt * mu2 + a1 * mu2 + a2 * dt + a3);
+
+		/**********************************/
+
+		a3real z0 = demoMode->curveWaypoint[0].z;
+		a3real z1 = demoMode->curveWaypoint[1].z;
+		a3real z2 = demoMode->curveWaypoint[2].z;
+		a3real z3 = demoMode->curveWaypoint[3].z;
+
+		a3real c0, c1, c2, c3;
+		c0 = -0.5f * z0 + 1.5f * z1 - 1.5f * z2 + 0.5f * z3;
+		c1 = z0 - 2.5f * z1 + 2.f * z2 - 0.5f * z3;
+		c2 = -0.5f * z0 + 0.5f * z2;
+		c3 = z1;
+
+		loc.z = (a3real)(c0 * dt * mu2 + c1 * mu2 + c2 * dt + c3);
+
 		
+		demoMode->obj_teapot->dataPtr->position = loc;
+		
+		if (demoMode->curveSegmentDuration > demoMode->curveSegmentTime)
+		{
+			demoMode->curveSegmentDuration = demoMode->curveSegmentTime - demoMode->curveSegmentDuration + (a3f32)dt;
+		}
+		else
+		{
+			demoMode->curveSegmentDuration += (a3f32)dt * 0.1f;
+		}
 	}
 }
 

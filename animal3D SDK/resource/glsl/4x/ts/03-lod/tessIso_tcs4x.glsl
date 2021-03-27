@@ -24,7 +24,7 @@
 
 #version 450
 
-// ****TO-DO: 
+// ****Done: 
 //	-> set tessellation levels, adjust as needed
 
 layout (vertices = 2) out;

@@ -63,7 +63,30 @@ vec3 calcParallaxCoord(in vec3 coord, in vec3 viewVec, const int steps)
 	// ****TO-DO:
 	//	-> step along view vector until intersecting height map
 	//	-> determine precise intersection point, return resulting coordinate
+	float layerDepth = 1.0 / steps;
+	float currentLayerDepth = 0.0;
+	vec3 p = viewVec.xyz * 0.1;
+	vec3 deltaTexCoords = p / steps;
+
+	vec3 curTexCoords = coord;
+	float curDepthMapValue = texture(uTex_dm, curTexCoords.xy).r;
+
+	while(currentLayerDepth < curDepthMapValue)
+	{
+		curTexCoords -= deltaTexCoords;
+		curDepthMapValue = texture(uTex_dm, curTexCoords.xy).r;
+		currentLayerDepth += layerDepth;
+	}
 	
+	vec3 prevTexCoords = curTexCoords + deltaTexCoords;
+
+	float afterDepth = curDepthMapValue - currentLayerDepth;
+	float beforeDepth = texture(uTex_dm, prevTexCoords.xy).r - currentLayerDepth + layerDepth;
+
+	float weight = afterDepth / (afterDepth - beforeDepth);
+
+	coord = prevTexCoords * weight + curTexCoords * (1.0 - weight);
+
 	// done
 	return coord;
 }
@@ -89,11 +112,7 @@ void main()
 	//		(hint: the above TBN bases convert tangent to view, figure out 
 	//		an efficient way of representing the required matrix operation)
 	// tangent-space view vector
-	vec3 viewVec_tan = vec3(
-		0.0,
-		0.0,
-		0.0
-	);
+	vec3 viewVec_tan = (viewVec * vTangentBasis_view).xyz ;
 	
 	// parallax occlusion mapping
 	vec3 texcoord = vec3(vTexcoord_atlas.xy, uSize);

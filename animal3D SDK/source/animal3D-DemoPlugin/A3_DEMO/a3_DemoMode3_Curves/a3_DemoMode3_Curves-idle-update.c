@@ -70,62 +70,43 @@ void a3curves_update_animation(a3_DemoState* demoState, a3_DemoMode3_Curves* dem
 		0-1 -> 1-2 -> 2-3
 		*/
 		
-		a3real i0, i1,i2,i3;
-		i0 = (a3real)((demoMode->curveSegmentIndex));
-		i1 = (a3real)((demoMode->curveSegmentIndex + 1) % 4);
-		i2 = (a3real)((demoMode->curveSegmentIndex + 2) % 4);
-		i3 = (a3real)((demoMode->curveSegmentIndex + 3) % 4);
+		int i0, i1;
+		i0 = (int)(demoMode->curveSegmentIndex);
+		i1 = (int)((demoMode->curveSegmentIndex + 1) % 4);
+		
+		float u = demoMode->curveSegmentTime / demoMode->curveSegmentDuration;
 
-		a3vec4 loc = {0,0,0,0};
-		a3real x0 = i0; //demoMode->curveWaypoint[0].x;
-		a3real x1 = i1;//demoMode->curveWaypoint[1].x;
-		a3real x2 = i2;//demoMode->curveWaypoint[2].x;
-		a3real x3 = i3;//demoMode->curveWaypoint[3].x;
+		float a = (1.0f + 2.0f * u) * (1.0f - u) * (1.0f - u) * (1.0f - u);
+		float b = u * (1 - u) * (1 - u) * (1 - u);
+		float c = u * u * (3 - 2 * u);
+		float d = u * u * (u - 1);
 
-		//a3real x0 = demoMode->curveWaypoint[0].x;
-		//a3real x1 = demoMode->curveWaypoint[1].x;
-		//a3real x2 = demoMode->curveWaypoint[2].x;
-		//a3real x3 = demoMode->curveWaypoint[3].x;
+		//a = a * 0.5f;
+		a3vec4 p0 = demoMode->curveWaypoint[i0];
+		a3real4MulS(p0.v, (a3real)a);
 
-		a3real b0, b1, b2, b3, mu2;
-		mu2 = demoMode->curveSegmentTime * demoMode->curveSegmentTime;
-		b0 = -0.5f * x0 + 1.5f * x1 - 1.5f * x2 + 0.5f * x3;
-		b1 = x0 - 2.5f * x1 + 2.f * x2 - 0.5f * x3;
-		b2 = -0.5f * x0 + 0.5f * x2;
-		b3 = x1;
+		//b = b * -1.0f;
+		a3vec4 t0 = demoMode->curveTangent[i0];
+		a3real4MulS(t0.v, (a3real)b);
 
-		loc.x = (a3real)(b0 * dt * mu2 + b1 * mu2 + b2 * dt + b3);
+		//c = c * 2.8f;
+		a3vec4 p1 = demoMode->curveWaypoint[i1];
+		a3real4MulS(p1.v, (a3real)c);
 
-		/************************************************/
-		a3real y0 = demoMode->curveWaypoint[0].y;
-		a3real y1 = demoMode->curveWaypoint[1].y;
-		a3real y2 = demoMode->curveWaypoint[2].y;
-		a3real y3 = demoMode->curveWaypoint[3].y;
-
-		a3real a0, a1, a2, a3;
-		a0 = -0.5f * y0 + 1.5f * y1 - 1.5f * y2 + 0.5f * y3;
-		a1 = y0 - 2.5f * y1 + 2.f * y2 - 0.5f * y3;
-		a2 = -0.5f * y0 + 0.5f* y2;
-		a3 = y1;
-
-		loc.y = (a3real)(a0 * dt * mu2 + a1 * mu2 + a2 * dt + a3);
-
-		/**********************************/
-
-		a3real z0 = demoMode->curveWaypoint[0].z;
-		a3real z1 = demoMode->curveWaypoint[1].z;
-		a3real z2 = demoMode->curveWaypoint[2].z;
-		a3real z3 = demoMode->curveWaypoint[3].z;
-
-		a3real c0, c1, c2, c3;
-		c0 = -0.5f * z0 + 1.5f * z1 - 1.5f * z2 + 0.5f * z3;
-		c1 = z0 - 2.5f * z1 + 2.f * z2 - 0.5f * z3;
-		c2 = -0.5f * z0 + 0.5f * z2;
-		c3 = z1;
-
-		loc.z = (a3real)(c0 * dt * mu2 + c1 * mu2 + c2 * dt + c3);
+		//d = d * -1.f;
+		a3vec4 t1 = demoMode->curveTangent[i1];
+		a3real4MulS(t1.v, (a3real)d);
 
 		
+		
+		a3vec4 loc = p0;
+		a3real4Add(loc.v, p1.v);
+		a3real4Sub(loc.v, t0.v);
+		a3real4Sub(loc.v, t1.v);
+
+
+		//a3real4Lerp(loc.v, demoMode->curveWaypoint[i0].v, demoMode->curveWaypoint[i1].v, u);
+
 		demoMode->obj_teapot->dataPtr->position = loc;
 		
 		demoMode->curveSegmentTime += (a3f32)dt;
@@ -134,6 +115,7 @@ void a3curves_update_animation(a3_DemoState* demoState, a3_DemoMode3_Curves* dem
 		if (demoMode->curveSegmentTime >= demoMode->curveSegmentDuration  )
 		{
 			demoMode->curveSegmentTime -= demoMode->curveSegmentDuration;
+			demoMode->curveSegmentIndex = i1;
 		}	
 		
 	}

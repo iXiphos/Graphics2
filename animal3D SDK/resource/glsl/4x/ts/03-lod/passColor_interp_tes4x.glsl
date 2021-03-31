@@ -43,11 +43,15 @@ uniform mat4 uP;
 
 out vec4 vColor;
 
-vec4 HermiteCubicInterp(vec4 pointOne, vec4 pointTwo, vec4 pointThree, vec4 pointFour, float val)
+vec4 CubicHermite(vec4 p0, vec4 p1, vec4 tan0, vec4 tan1, float u)
 {
-	
 
+	float a = (1 + 2 * u) * pow((1-u),3);
+	float b = u * pow((1-u),3);
+	float c = pow(u, 2) * (3- 2* u);
+	float d = pow(u, 2) * (u - 1);
 
+	return (a * p0 * .5) + (b * tan0 * 3) + (c * p1 *2.8) + (d * tan1 * 3);
 }
 
 void main()
@@ -58,8 +62,8 @@ void main()
 
 	int i0 = gl_PrimitiveID;
 	int i1 = (i0 + 1) % uCount;
-	int i2 = (i0 + 2) % uCount;
-	int i3 = (i0 + 3) % uCount;
+	//int i2 = (i0 + 2) % uCount;
+	//int i3 = (i0 + 3) % uCount;
 
 
 
@@ -70,11 +74,15 @@ void main()
 	float u = gl_TessCoord[0].x;
 
 	vColor = mix(vec4(0.5, 0.0, 0.5, 1.0), vec4(1,1,0,1), u);
-	vec4 p = mix(
+	vec4 p = CubicHermite(
 		uCurveWaypoint[i0],
 		uCurveWaypoint[i1],
+		uCurveTangent[i0],
+		uCurveTangent[i1],
 		u
 	);
+
+	//vec4 p = mix(uCurveWaypoint[i0], uCurveWaypoint[i1], u);
 	gl_Position = uP * p;
 
 	

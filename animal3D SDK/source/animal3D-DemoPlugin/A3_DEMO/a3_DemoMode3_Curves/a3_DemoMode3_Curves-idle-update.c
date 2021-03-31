@@ -65,14 +65,30 @@ void a3curves_update_animation(a3_DemoState* demoState, a3_DemoMode3_Curves* dem
 
 		/* http://paulbourke.net/miscellaneous/interpolation/ */
 
+		/*
+		simplify - write only once
+		0-1 -> 1-2 -> 2-3
+		*/
+		
+		a3real i0, i1,i2,i3;
+		i0 = (a3real)((demoMode->curveSegmentIndex));
+		i1 = (a3real)((demoMode->curveSegmentIndex + 1) % 4);
+		i2 = (a3real)((demoMode->curveSegmentIndex + 2) % 4);
+		i3 = (a3real)((demoMode->curveSegmentIndex + 3) % 4);
+
 		a3vec4 loc = {0,0,0,0};
-		a3real x0 = demoMode->curveWaypoint[0].x;
-		a3real x1 = demoMode->curveWaypoint[1].x;
-		a3real x2 = demoMode->curveWaypoint[2].x;
-		a3real x3 = demoMode->curveWaypoint[3].x;
+		a3real x0 = i0; //demoMode->curveWaypoint[0].x;
+		a3real x1 = i1;//demoMode->curveWaypoint[1].x;
+		a3real x2 = i2;//demoMode->curveWaypoint[2].x;
+		a3real x3 = i3;//demoMode->curveWaypoint[3].x;
+
+		//a3real x0 = demoMode->curveWaypoint[0].x;
+		//a3real x1 = demoMode->curveWaypoint[1].x;
+		//a3real x2 = demoMode->curveWaypoint[2].x;
+		//a3real x3 = demoMode->curveWaypoint[3].x;
 
 		a3real b0, b1, b2, b3, mu2;
-		mu2 = demoMode->curveSegmentDuration * demoMode->curveSegmentDuration;
+		mu2 = demoMode->curveSegmentTime * demoMode->curveSegmentTime;
 		b0 = -0.5f * x0 + 1.5f * x1 - 1.5f * x2 + 0.5f * x3;
 		b1 = x0 - 2.5f * x1 + 2.f * x2 - 0.5f * x3;
 		b2 = -0.5f * x0 + 0.5f * x2;
@@ -112,14 +128,14 @@ void a3curves_update_animation(a3_DemoState* demoState, a3_DemoMode3_Curves* dem
 		
 		demoMode->obj_teapot->dataPtr->position = loc;
 		
-		if (demoMode->curveSegmentDuration > demoMode->curveSegmentTime)
+		demoMode->curveSegmentTime += (a3f32)dt;
+
+		//when time excedes the duration we move to the next segment
+		if (demoMode->curveSegmentTime >= demoMode->curveSegmentDuration  )
 		{
-			demoMode->curveSegmentDuration = demoMode->curveSegmentTime - demoMode->curveSegmentDuration + (a3f32)dt;
-		}
-		else
-		{
-			demoMode->curveSegmentDuration += (a3f32)dt * 0.1f;
-		}
+			demoMode->curveSegmentTime -= demoMode->curveSegmentDuration;
+		}	
+		
 	}
 }
 

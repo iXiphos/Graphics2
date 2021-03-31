@@ -47,5 +47,7 @@ in vbVertexData_tess {
 
 void main()
 {
+	// gl_TessCoord -> barycentric (3 elements)
 	
+	//gl_position = ?????
 }

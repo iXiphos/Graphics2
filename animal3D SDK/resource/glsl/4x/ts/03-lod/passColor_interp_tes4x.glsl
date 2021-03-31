@@ -31,7 +31,7 @@
 
 layout (isolines, equal_spacing) in;
 
-uniform uBCurve
+uniform ubCurve
 {
 	vec4 uCurveWaypoint[32];
 	vec4 uCurveTangent[32];
@@ -43,21 +43,33 @@ uniform mat4 uP;
 
 out vec4 vColor;
 
+vec4 HermiteCubicInterp(vec4 pointOne, vec4 pointTwo, vec4 pointThree, vec4 pointFour, float val)
+{
+	
+
+
+}
+
 void main()
 {
-	// gl_tTessCooord
+	// gl_TessCoord
 	// [0] = which line[0, 1)
 	// [1] = subdivision[0, 1)
 
 	int i0 = gl_PrimitiveID;
 	int i1 = (i0 + 1) % uCount;
+	int i2 = (i0 + 2) % uCount;
+	int i3 = (i0 + 3) % uCount;
+
+
+
 
 	// In This Example
 	// gl_TessCoord[0] = intepolation parameter
 	// gl_TessCoord[1] = 0
-	float u = gl_TessCoord[0];
+	float u = gl_TessCoord[0].x;
 
-	vColor = vec4(0.5, 0.0, 1.0, 1.0);
+	vColor = mix(vec4(0.5, 0.0, 0.5, 1.0), vec4(1,1,0,1), u);
 	vec4 p = mix(
 		uCurveWaypoint[i0],
 		uCurveWaypoint[i1],
@@ -65,4 +77,5 @@ void main()
 	);
 	gl_Position = uP * p;
 
+	
 }

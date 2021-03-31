@@ -35,19 +35,36 @@
 
 layout (triangles, equal_spacing) in;
 
-in vbVertexData {
+out vbVertexData {
 	mat4 vTangentBasis_view;
 	vec4 vTexcoord_atlas;
-};
+} vbVertexData_out;
 
 in vbVertexData_tess {
 	mat4 vTangentBasis_view;
 	vec4 vTexcoord_atlas;
 } vVertexData_tess[];
 
+uniform sampler2D uTex_dm, uTex_sm, uTex_nm, uTex_hm;
+uniform mat4 uMVP, uP;
+
 void main()
 {
 	// gl_TessCoord -> barycentric (3 elements)
 	
+
+	vec4 tc1 = mix(vVertexData_tess[0].vTexcoord_atlas, vVertexData_tess[1].vTexcoord_atlas, gl_TessCoord.x);
+	vec4 tc2 = mix(vVertexData_tess[2].vTexcoord_atlas, vVertexData_tess[3].vTexcoord_atlas, gl_TessCoord.x);
+	vec4 tc = mix(tc2, tc1, gl_TessCoord.y);
+
+	vbVertexData_out.vTexcoord_atlas = tc;
+	vec4 p1 = mix(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_TessCoord.x);
+	vec4 p2 = mix(gl_in[2].gl_Position, gl_in[3].gl_Position, gl_TessCoord.x);
+	vec4 p = mix(p2, p1, gl_TessCoord.y);
+
+	p.y += texture(uTex_dm, tc.xy).r;
+
+
+	gl_Position = uMVP * p;
 	//gl_position = ?????
 }

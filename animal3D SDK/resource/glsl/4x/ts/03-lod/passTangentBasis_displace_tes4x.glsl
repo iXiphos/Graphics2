@@ -51,20 +51,17 @@ uniform mat4 uMVP, uP;
 void main()
 {
 	// gl_TessCoord -> barycentric (3 elements)
-	
+	vec2 tc1 = mix(vVertexData_tess[0].vTexcoord_atlas.xy, vVertexData_tess[1].vTexcoord_atlas.xy, gl_TessCoord.x);
+	vec2 tc2 = mix(vVertexData_tess[2].vTexcoord_atlas.xy, vVertexData_tess[3].vTexcoord_atlas.xy, gl_TessCoord.x);
+	vec2 tc = mix(tc2, tc1, gl_TessCoord.y);
 
-	vec4 tc1 = mix(vVertexData_tess[0].vTexcoord_atlas, vVertexData_tess[1].vTexcoord_atlas, gl_TessCoord.x);
-	vec4 tc2 = mix(vVertexData_tess[2].vTexcoord_atlas, vVertexData_tess[3].vTexcoord_atlas, gl_TessCoord.x);
-	vec4 tc = mix(tc2, tc1, gl_TessCoord.y);
-
-	vbVertexData_out.vTexcoord_atlas = tc;
+	vbVertexData_out.vTexcoord_atlas = vec4(tc,0,0);
 	vec4 p1 = mix(gl_in[0].gl_Position, gl_in[1].gl_Position, gl_TessCoord.x);
 	vec4 p2 = mix(gl_in[2].gl_Position, gl_in[3].gl_Position, gl_TessCoord.x);
 	vec4 p = mix(p2, p1, gl_TessCoord.y);
 
-	p.y += texture(uTex_dm, tc.xy).r;
-
+	p.y += texture(uTex_dm, tc).r;
+	vbVertexData_out.vTangentBasis_view = vVertexData_tess[gl_PrimitiveID].vTangentBasis_view ;
 
 	gl_Position = uMVP * p;
-	//gl_position = ?????
 }

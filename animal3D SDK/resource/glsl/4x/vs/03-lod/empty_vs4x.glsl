@@ -16,7 +16,7 @@
 
 /*
 	animal3D SDK: Minimal 3D Animation Framework
-	By Daniel S. Buckstein
+	By Daniel S. Buckstein with contribution from Aidan and Chris
 	
 	empty_vs4x.glsl
 	Empty vertex shader.

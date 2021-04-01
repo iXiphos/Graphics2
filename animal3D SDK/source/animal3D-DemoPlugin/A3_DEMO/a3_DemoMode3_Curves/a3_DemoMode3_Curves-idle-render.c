@@ -16,7 +16,7 @@
 
 /*
 	animal3D SDK: Minimal 3D Animation Framework
-	By Daniel S. Buckstein
+	By Daniel S. Buckstein with contribution from Aidan and Chris
 
 	a3_DemoMode3_Curves-idle-render.c
 	Demo mode implementations: animation scene.

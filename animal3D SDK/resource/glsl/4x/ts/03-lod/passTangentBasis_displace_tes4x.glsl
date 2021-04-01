@@ -16,7 +16,7 @@
 
 /*
 	animal3D SDK: Minimal 3D Animation Framework
-	By Daniel S. Buckstein
+	By Daniel S. Buckstein with contribution from Aidan and Chris
 	
 	passTangentBasis_displace_tes4x.glsl
 	Pass interpolated and displaced tangent basis.
@@ -24,7 +24,7 @@
 
 #version 450
 
-// ****TO-DO: 
+// ****SomeoneDone: 
 //	-> declare inbound and outbound varyings to pass along vertex data
 //		(hint: inbound matches TCS naming and is still an array)
 //		(hint: outbound matches GS/FS naming and is singular)
@@ -51,6 +51,8 @@ uniform mat4 uMVP, uP;
 void main()
 {
 	// gl_TessCoord -> barycentric (3 elements)
+
+	//Found in bluebook on page 366
 	vec2 tc1 = mix(vVertexData_tess[0].vTexcoord_atlas.xy, vVertexData_tess[1].vTexcoord_atlas.xy, gl_TessCoord.x);
 	vec2 tc2 = mix(vVertexData_tess[2].vTexcoord_atlas.xy, vVertexData_tess[3].vTexcoord_atlas.xy, gl_TessCoord.x);
 	vec2 tc = mix(tc2, tc1, gl_TessCoord.y);

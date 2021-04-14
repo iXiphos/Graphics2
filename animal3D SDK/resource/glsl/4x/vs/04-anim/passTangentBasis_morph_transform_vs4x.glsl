@@ -97,6 +97,24 @@ vec4 Slerp(vec4 p0, vec4 p1, float t)
   return P;
 }
 
+vec4 CubicHermite(vec4 p0, vec4 p1, vec4 tan0, vec4 tan1, float u)
+{
+
+    float a = (1 + 2 * u) * pow((1-u),3);
+    float b = u * pow((1-u),3);
+    float c = pow(u, 2) * (3- 2* u);
+    float d = pow(u, 2) * (u - 1);
+
+    return (a * p0 * .5) + (b * tan0 * 3) + (c * p1 *2.8) + (d * tan1 * 3);
+}
+
+vec4 sigmoid(vec4 p0, vec4 p1, float param)
+{
+	float val = (1/ (1 + pow(2.71828, -1 * (param * 10 -5 ))));
+	vec4 final  = p1 * val + p0 * (1-val);
+	return final;
+}
+
 void main()
 {
 	// DUMMY OUTPUT: directly assign input position to output position
@@ -105,7 +123,7 @@ void main()
 	int i2 = (i + 1) % 5;
 	float param  = uTime - float(i);	
 
-	vec4 position = mix(aMorphTarget[i].position, aMorphTarget[i2].position, param);
+	vec4 position = sigmoid(aMorphTarget[i].position, aMorphTarget[i2].position, param);
 	vec3 normal = Slerp(aMorphTarget[i].normal, aMorphTarget[i2].normal, param).xyz;
 	vec3 tangent = Slerp(aMorphTarget[i].tangent, aMorphTarget[i2].tangent, param).xyz;
 	vec3 bitangent = cross(normal,tangent);

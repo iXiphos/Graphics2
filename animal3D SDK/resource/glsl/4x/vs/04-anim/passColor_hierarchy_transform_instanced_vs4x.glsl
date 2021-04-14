@@ -36,7 +36,10 @@ layout (location = 0) in vec4 aPosition;
 
 uniform ubTransformMVP {
 	mat4 uMVP[MAX_INSTANCES];
+	int hierarchyDepth_skel[MAX_INSTANCES];
 };
+
+uniform int uIndex;
 
 uniform vec4 uColor0[MAX_COLORS];
 
@@ -51,7 +54,7 @@ void main()
 //	gl_Position = aPosition;
 	gl_Position = uMVP[gl_InstanceID] * aPosition;
 	
-	vColor = uColor0[gl_InstanceID];
+	vColor = uColor0[hierarchyDepth_skel[gl_InstanceID]];
 
 	vVertexID = gl_VertexID;
 	vInstanceID = gl_InstanceID;

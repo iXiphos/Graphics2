@@ -34,11 +34,21 @@
 //		(hint: results can be stored in local variables named after the 
 //		complete tangent basis attributes provided before any changes)
 
-layout (location = 0) in vec4 aPosition;
-layout (location = 2) in vec3 aNormal;
-layout (location = 8) in vec4 aTexcoord;
-layout (location = 10) in vec3 aTangent;
-layout (location = 11) in vec3 aBitangent;
+//layout (location = 0) in vec4 aPosition;
+//layout (location = 2) in vec3 aNormal;
+//layout (location = 8) in vec4 aTexcoord;
+//layout (location = 10) in vec3 aTangent;
+//layout (location = 11) in vec3 aBitangent;
+
+struct sMorphTarget
+{
+	vec4 position;	//consumes 1
+	vec4 normal;  	//consumes 2
+	vec4 tangent;	//consumes 2
+};
+
+layout(location = 0) in sMorphTarget aMorphTarget[5];
+layout(location = 15) in vec4 aTexcoord;
 
 struct sModelMatrixStack
 {
@@ -56,7 +66,10 @@ uniform ubTransformStack
 {
 	sModelMatrixStack uModelMatrixStack[MAX_OBJECTS];
 };
+
 uniform int uIndex;
+uniform float uTime;
+uniform mat4 uSize;
 
 out vbVertexData {
 	mat4 vTangentBasis_view;
@@ -66,18 +79,49 @@ out vbVertexData {
 flat out int vVertexID;
 flat out int vInstanceID;
 
+//https://www.geeks3d.com/20140205/glsl-simple-morph-target-animation-opengl-glslhacker-demo/
+//t = morph time - current elapsed time
+//spherical linear interpolation
+vec4 Slerp(vec4 p0, vec4 p1, float t)
+{
+  float dotp = dot(normalize(p0), normalize(p1));
+  if ((dotp > 0.9999) || (dotp<-0.9999))
+  {
+    if (t<=0.5)
+      return p0;
+    return p1;
+  }
+  float theta = acos(dotp * 3.14159/180.0);
+  vec4 P = ((p0*sin((1-t)*theta) + p1*sin(t*theta)) / sin(theta));
+  P.w = 1;
+  return P;
+}
+
 void main()
 {
 	// DUMMY OUTPUT: directly assign input position to output position
 	//gl_Position = aPosition;
+	int i = int(uTime) % 5;
+	int i2 = (i + 1) % 5;
+	float param  = uTime - float(i);	
+
+	vec4 position = mix(aMorphTarget[i].position, aMorphTarget[i2].position, param);
+	vec3 normal = Slerp(aMorphTarget[i].normal, aMorphTarget[i2].normal, param).xyz;
+	vec3 tangent = Slerp(aMorphTarget[i].tangent, aMorphTarget[i2].tangent, param).xyz;
+	vec3 bitangent = cross(normal,tangent);
+	
 	
 	sModelMatrixStack t = uModelMatrixStack[uIndex];
 	
-	vTangentBasis_view = t.modelViewMatInverseTranspose * mat4(aTangent, 0.0, aBitangent, 0.0, aNormal, 0.0, vec4(0.0));
-	vTangentBasis_view[3] = t.modelViewMat * aPosition;
-	gl_Position = t.modelViewProjectionMat * aPosition;
+
+	vTangentBasis_view = t.modelViewMatInverseTranspose * mat4(tangent, 0.0, bitangent, 0.0, normal, 0.0, vec4(0.0));
+	vTangentBasis_view[3] = t.modelViewMat * position; 
+	gl_Position = t.modelViewProjectionMat * position;
 	
 	vTexcoord_atlas = t.atlasMat * aTexcoord;
+ 
+	//gl_Position = position;
+
 
 	vVertexID = gl_VertexID;
 	vInstanceID = gl_InstanceID;

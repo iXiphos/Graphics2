@@ -78,14 +78,29 @@ inline int a3animate_updateSkeletonLocalSpace(a3_Hierarchy const* hierarchy,
 			// testing: copy base pose
 			tmpPose = *pBase;
 
-			// ****TO-DO:
+			// TO-DO:
 			// interpolate channels
+			a3real3Lerp(tmpPose.position.v, p0->position.v, p1->position.v, u);
+			a3real3Lerp(tmpPose.scale.v, p0->scale.v, p1->scale.v, u);
+			a3real3Lerp(tmpPose.euler.v, p0->euler.v, p1->euler.v, u);
 
-			// ****TO-DO:
+			// TO-DO:
 			// concatenate base pose
+			a3real3Add(tmpPose.position.v, pBase->position.v);
+			a3real3Add(tmpPose.euler.v, pBase->euler.v);
+			a3real3MulComp(tmpPose.scale.v, pBase->scale.v);
 
-			// ****TO-DO:
+			//a3clamp()
+			
+
+			// **TO-DO:
 			// convert to matrix
+			//localSpaceArray->m = a3mat4_identity;
+			a3real4x4SetIdentity(localSpaceArray->m);
+			a3real4x4SetRotateXYZ(localSpaceArray->m, tmpPose.euler.x, tmpPose.euler.y, tmpPose.euler.z);
+			localSpaceArray->v3.xyz = tmpPose.position.xyz;
+			localSpaceArray->m33 = a3real_one;
+			//a3real4x4SetScale(localSpaceArray->m, tmpPose.scale.x);
 
 		}
 
@@ -102,8 +117,31 @@ inline int a3animate_updateSkeletonObjectSpace(a3_Hierarchy const* hierarchy,
 	{
 		// ****TO-DO: 
 		// forward kinematics
-		//a3ui32 j;
-		//a3i32 jp;
+		int numNodes = hierarchy->numNodes;
+		int index = 0;
+
+		a3_HierarchyNode  tmpNode = hierarchy->nodes[index];
+
+		a3ui32 j;
+		a3i32 jp;
+
+		while (index < numNodes)
+		{
+			tmpNode = hierarchy->nodes[index];
+			j = tmpNode.index;
+			jp = tmpNode.parentIndex;
+
+			if (jp == -1)
+			{
+				objectSpaceArray[j] = localSpaceArray[j];
+			}
+			else
+			{
+				a3real4x4ProductTransform(objectSpaceArray[j].m, objectSpaceArray[jp].m, localSpaceArray[j].m);
+			}
+			index++;
+		}
+
 
 		// done
 		return 1;

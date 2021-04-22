@@ -6,6 +6,13 @@ Shader "Unlit/Fog"
         _Color("Color", Color) = (1,1,1,1)
         
         _Gloss("Gloss", Range(0, 1)) = 1.0
+        _FogHeight("Fog Height",Range(0,50)) = 1.0
+        _FogStrength("Fog Strength", Range(0,1)) = 1.0
+        _FogColor("Fog Color", Color) = (1,1,1,1)
+        _FogMaxDistance("Fog Max Distance", Range(50,200)) = 10
+        _FogStartingPoint("Fog Starting Point", Range(0,1)) = 0.1
+        _FogEnabled("Fog Enabled", Range(0,1)) = 1
+
     }
     SubShader
     {
@@ -45,7 +52,13 @@ Shader "Unlit/Fog"
 
             float4 _Color;
             float _Gloss;
-            sampler2D _CameraDepthTexture;
+            float _FogHeight;
+            float _FogStrength;
+            float4 _FogColor;
+            float _FogMaxDistance;
+            float _FogStartingPoint;
+            float _FogEnabled;
+
 
             v2f vert (appdata v)
             {
@@ -58,6 +71,9 @@ Shader "Unlit/Fog"
                 o.worldPos =  mul(unity_ObjectToWorld, v.vertex);
                 return o;
             }
+
+  
+
 
             fixed4 frag (v2f i) : SV_Target
             {
@@ -74,11 +90,40 @@ Shader "Unlit/Fog"
                 specularLight = pow(specularLight, specularExponent);
                 specularLight *= _LightColor0;
 
+                diffuse = diffuse * tex2D(_MainTex, i.uv) + float3(0.05,0.05,0.05);
+/* 
+                float z = length(_WorldSpaceCameraPos - i.worldPos);
+                float de = 0.25 * smoothstep(0.0, 6.0, 10.0 + i.worldPos.y);
+                float di = 0.045 * smoothstep(0.0, 40, 20.0 + i.worldPos.y);
+                float extinction = exp(-z * de);
+                float inscattering = exp(-z * di);
+
+                return float4((diffuse + specularLight) * extinction + _FogColor.rgb * (1.0 - inscattering), 1.0);  */
+
+                //float4 fogColor = _FogColor
+
                 float depth = 1 - i.depth;
+                depth = length(_WorldSpaceCameraPos - i.worldPos)/_FogMaxDistance;
+                depth -= _FogStartingPoint;
+                
+                if(depth < 0){
+                    depth  = 0;
+                }
+               
+               if(depth > 1){
+                   depth = 1;
+               }
+               
+                float3 finalColorWithoutFog = diffuse + specularLight;
+                float3 colorWithFog;
+                if((int)_FogEnabled){
+                    colorWithFog = lerp(finalColorWithoutFog, _FogColor, depth);
+                }
+                else{
+                    colorWithFog = finalColorWithoutFog;
+                }
 
-                diffuse *= depth;
-
-                return float4(diffuse * tex2D(_MainTex, i.uv) * _Color + specularLight + float3(0.05,0.05,0.05), 1);
+                return float4( colorWithFog, 1);
 
 
             }

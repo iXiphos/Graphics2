@@ -7,7 +7,7 @@ public class DeferredFog : MonoBehaviour
 {
 
     public Shader deferredFog;
-    [System.NonSerialized]
+    //[System.NonSerialized]
     public Material fogMaterial;
 
     [ImageEffectOpaque]

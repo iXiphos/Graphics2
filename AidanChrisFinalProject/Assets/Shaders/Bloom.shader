@@ -9,7 +9,7 @@ Shader "Unlit/Bloom"
 
 		sampler2D _MainTex, _SourceTex;
 		float4 _MainTex_TexelSize;
-		half _Threshold;
+		half _Threshold, _SoftThreshold;;
 
 		half3 Sample(float2 uv)
 		{
@@ -28,7 +28,11 @@ Shader "Unlit/Bloom"
 		half3 Prefilter(half3 c)
 		{
 			half brightness = max(c.r, max(c.g, c.b));
-			half contribution = max(0, brightness - _Threshold);
+			half knee = _Threshold * _SoftThreshold;
+			half soft = brightness - _Threshold + knee;
+			soft = clamp(soft, 0, 2 * knee);
+			soft = soft * soft / (4 * knee + 0.00001);
+			half contribution = max(soft, brightness - _Threshold);
 			contribution /= max(brightness, 0.00001);
 			return c * contribution;
 		}

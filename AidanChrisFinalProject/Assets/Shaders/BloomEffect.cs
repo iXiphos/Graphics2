@@ -21,6 +21,8 @@ public class BloomEffect : MonoBehaviour
 
 	[Range(0, 10)]
 	public float threshold = 1;
+	[Range(0, 1)]
+	public float softThreshold = 0.5f;
 
 	void OnRenderImage(RenderTexture source, RenderTexture destination)
 	{
@@ -31,6 +33,7 @@ public class BloomEffect : MonoBehaviour
 		}
 
 		bloom.SetFloat("_Threshold", threshold);
+		bloom.SetFloat("_SoftThreshold", softThreshold);
 
 		int width = source.width / 2;
 		int height = source.height / 2;

@@ -24,6 +24,8 @@ public class BloomEffect : MonoBehaviour
 	[Range(0, 1)]
 	public float softThreshold = 0.5f;
 
+	public Color MatColor;
+
 	void OnRenderImage(RenderTexture source, RenderTexture destination)
 	{
 		if (bloom == null)
@@ -31,11 +33,12 @@ public class BloomEffect : MonoBehaviour
 			bloom = new Material(bloomShader);
 			bloom.hideFlags = HideFlags.HideAndDontSave;
 		}
+		bloom.SetColor("_Color", MatColor);
 
 		bloom.SetFloat("_Threshold", threshold);
 		bloom.SetFloat("_SoftThreshold", softThreshold);
 
-		int width = source.width / 2;
+		int width = source.width / 20;
 		int height = source.height / 2;
 		RenderTextureFormat format = source.format;
 

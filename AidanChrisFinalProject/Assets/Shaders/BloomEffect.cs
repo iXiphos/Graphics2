@@ -38,7 +38,7 @@ public class BloomEffect : MonoBehaviour
 		bloom.SetFloat("_Threshold", threshold);
 		bloom.SetFloat("_SoftThreshold", softThreshold);
 
-		int width = source.width / 20;
+		int width = source.width / 2;
 		int height = source.height / 2;
 		RenderTextureFormat format = source.format;
 
@@ -53,7 +53,7 @@ public class BloomEffect : MonoBehaviour
 		int i = 1;
 		for (; i < iterations; i++)
 		{
-			width /= 2;
+			width /= 4;
 			height /= 2;
 			if (height < 2)
 			{

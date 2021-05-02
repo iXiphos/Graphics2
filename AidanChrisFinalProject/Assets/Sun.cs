@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimationLerp : MonoBehaviour
+public class Sun : MonoBehaviour
 {
 
     public Vector3[] curveWaypoint;
@@ -10,6 +10,9 @@ public class AnimationLerp : MonoBehaviour
     int curveSegmentIndex;
     float curveSegmentTime;
     public float curveSegmentDuration;
+
+
+    public Transform lookTransform;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +24,8 @@ public class AnimationLerp : MonoBehaviour
     void Update()
     {
         Animate();
+
+        gameObject.transform.LookAt(lookTransform);
     }
 
     void Animate()

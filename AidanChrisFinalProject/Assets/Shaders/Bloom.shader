@@ -10,7 +10,7 @@ Shader "Unlit/Bloom"
 
 		sampler2D _MainTex, _SourceTex;
 		float4 _MainTex_TexelSize;
-		half _Threshold, _SoftThreshold;
+		half _Threshold;
 		float4 _Color;
 
 		half3 Sample(float2 uv)
@@ -32,15 +32,10 @@ Shader "Unlit/Bloom"
 		half3 Prefilter(half3 c)
 		{
 			//c = GammaToLinearSpace(c);
-			half bright = max(max(c.r, c.g), c.b);
-			half knee = _Threshold * _SoftThreshold;
-			half soft = bright = (_Threshold - knee);
-			soft = clamp(soft, 0, 2 * knee);
-			soft = soft * soft * 1 / (4 * knee + 0.00001);
-
-			c *= max(soft, bright - _Threshold) / max(bright, 1e-5);
-
-			return c;
+			half brightness = max(c.r, max(c.g, c.b));
+            half contribution = max(0, brightness - _Threshold);
+            contribution /= max(brightness, 0.00001);
+            return c * contribution;
 		}
 
 		struct VertexData

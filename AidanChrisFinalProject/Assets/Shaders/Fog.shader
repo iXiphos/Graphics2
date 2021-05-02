@@ -12,6 +12,7 @@ Shader "Unlit/Fog"
         _FogYDepth("Y Depth", Range(0,5000)) = 200
         _FogStregnth("Stregnth", Range(0,1)) = 1
         _FogEnabled("Enabled", Range(0,1)) = 1
+        
 
    
 
@@ -61,6 +62,7 @@ Shader "Unlit/Fog"
             float _FogYDepth;
             float _FogStregnth;
             float _FogEnabled;
+            float4 _SunPos;
 
 
             v2f vert (appdata v)
@@ -121,8 +123,18 @@ Shader "Unlit/Fog"
 
                 float3 finalColorWithoutFog = diffuse + specularLight;
                 float3 colorWithFog;
+
+                float maxHeight = 100;
+                
+
+                float interpVal = _SunPos.y/1000;
+
+                interpVal = clamp(interpVal,0.0,1.0);
+                float3 color = _FogColor * interpVal;
+                
+                
                 if((int)_FogEnabled){
-                    colorWithFog = lerp(finalColorWithoutFog, _FogColor, depth);
+                    colorWithFog = lerp(finalColorWithoutFog, color, depth);
                 }
                 else{
                     colorWithFog = finalColorWithoutFog;

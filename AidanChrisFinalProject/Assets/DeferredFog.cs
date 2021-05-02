@@ -10,9 +10,15 @@ public class DeferredFog : MonoBehaviour
     //[System.NonSerialized]
     public Material fogMaterial;
 
+    
     [ImageEffectOpaque]
+
+
     private void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
+
+        // /Debug.Log(arr[1]);
+
         if(fogMaterial == null)
         {
             fogMaterial = new Material(deferredFog);

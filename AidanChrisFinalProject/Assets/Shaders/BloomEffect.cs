@@ -19,10 +19,9 @@ public class BloomEffect : MonoBehaviour
 	const int BoxUpPass = 2;
 	const int ApplyBloomPass = 2;
 
-	[Range(0, 10)]
-	public float threshold = 1;
 	[Range(0, 1)]
-	public float softThreshold = 0.5f;
+	public float threshold = 1;
+
 
 	public Color MatColor;
 
@@ -36,7 +35,7 @@ public class BloomEffect : MonoBehaviour
 		bloom.SetColor("_Color", MatColor);
 
 		bloom.SetFloat("_Threshold", threshold);
-		bloom.SetFloat("_SoftThreshold", softThreshold);
+	
 
 		int width = source.width / 2;
 		int height = source.height / 2;
@@ -53,7 +52,7 @@ public class BloomEffect : MonoBehaviour
 		int i = 1;
 		for (; i < iterations; i++)
 		{
-			width /= 4;
+			width /= 2;
 			height /= 2;
 			if (height < 2)
 			{

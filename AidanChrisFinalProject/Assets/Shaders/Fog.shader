@@ -97,18 +97,12 @@ Shader "Unlit/Fog"
                 diffuse = diffuse * tex2D(_MainTex, i.uv) * _Color + float3(0.05,0.05,0.05);
 
 
-                float depth = 1 - i.depth;
-                float YDepth = length(_FogHeight - i.worldPos.y) / _FogYDepth;
-                float XZDepth = length(_WorldSpaceCameraPos.xz - i.worldPos.xz)/ _FogMaxDistance;
-                
-                //animations
-                //XZDepth += (sin(_Time * 20) + 1) * 0.01 ;
-                
-
-
+                float depth;                                                         
+                float YDepth = length(_FogHeight - i.worldPos.y) / _FogYDepth;                      //interpolate on a vertical axis
+                float XZDepth = length(_WorldSpaceCameraPos.xz - i.worldPos.xz)/ _FogMaxDistance;   //interpolate horizontally on x and z axis     
+               
                 depth = XZDepth * ((1 - YDepth) + _FogStregnth);
                 depth += _FogStregnth;
-                
                 
                 //interpolate on the x and y directions
 
@@ -124,10 +118,8 @@ Shader "Unlit/Fog"
                 float3 finalColorWithoutFog = diffuse + specularLight;
                 float3 colorWithFog;
 
-                float maxHeight = 100;
-                
-
-                float interpVal = _SunPos.y/1000;
+                float maxHeight = 1000;
+                float interpVal = _SunPos.y/maxHeight;
 
                 interpVal = clamp(interpVal,0.0,1.0);
                 float3 color = _FogColor * interpVal;

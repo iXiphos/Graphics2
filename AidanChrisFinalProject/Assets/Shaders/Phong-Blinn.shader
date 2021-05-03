@@ -58,6 +58,7 @@ Shader "Unlit/Phong-Blinn"
                 return o;
             }
 
+            //adapted version of project 1
             fixed4 frag (v2f i) : SV_Target
             {
                 float3 N = normalize(i.normal);
